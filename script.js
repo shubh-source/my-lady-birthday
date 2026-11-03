@@ -1,17 +1,17 @@
 /**
- * Happy Birthday, My Lady - Royal Celebration Interactive Script
+ * Happy Birthday, My Lady - Warm Editorial Celebration Script
+ * Theme: Editorial Linen & Dusty Rose Palette
  * Features:
- * - Canvas Confetti & Fireworks Particle Engine
+ * - Canvas & DOM Confetti Engine in warm editorial tones
  * - Web Audio API Synthesizer (Happy Birthday Melody + Sound Effects)
- * - Interactive Cake Ceremony (Candle Blowing + Cake Slicing)
- * - Royal Wax-Sealed Letter Unfolding
- * - 3D Gift Box Surprise Unboxing with VIP Passes
- * - Photo Gallery with Upload & LocalStorage Persistence
+ * - Interactive Birthday Cake (Candle blow with smoke, cake slicing, served slice)
+ * - 3D Gift Box Unboxing with 4 VIP passes
+ * - Photo Memories Gallery with Custom Photo Upload & LocalStorage
  * - Interactive Wishing Wall with Persistent Sticky Notes
  */
 
 // ==========================================================================
-// 1. Audio Synthesizer (Zero External Dependencies)
+// 1. Audio Synthesizer (Warm Music Box Bells)
 // ==========================================================================
 class RoyalSoundEngine {
   constructor() {
@@ -30,8 +30,8 @@ class RoyalSoundEngine {
     }
   }
 
-  // Play a single musical tone with custom envelope
-  playTone(freq, duration, type = 'sine', volume = 0.15) {
+  // Play a single bell / chime note
+  playTone(freq, duration, type = 'sine', volume = 0.16) {
     this.init();
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -39,9 +39,9 @@ class RoyalSoundEngine {
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
-    // Warm music box / bell envelope
+    // Warm music box envelope
     gain.gain.setValueAtTime(0.001, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(volume, this.ctx.currentTime + 0.04);
+    gain.gain.exponentialRampToValueAtTime(volume, this.ctx.currentTime + 0.03);
     gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
 
     osc.connect(gain);
@@ -51,20 +51,20 @@ class RoyalSoundEngine {
     osc.stop(this.ctx.currentTime + duration);
   }
 
-  // Celebratory Chime / Fanfare
+  // Celebratory Chime
   playChime() {
     const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
     notes.forEach((freq, idx) => {
       setTimeout(() => {
-        this.playTone(freq, 0.6, 'triangle', 0.2);
-      }, idx * 120);
+        this.playTone(freq, 0.6, 'triangle', 0.18);
+      }, idx * 110);
     });
   }
 
-  // Candle blow out whoosh
+  // Soft candle blow whoosh
   playWhoosh() {
     this.init();
-    const bufferSize = this.ctx.sampleRate * 0.4;
+    const bufferSize = this.ctx.sampleRate * 0.35;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
@@ -74,12 +74,12 @@ class RoyalSoundEngine {
     noise.buffer = buffer;
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(800, this.ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.4);
+    filter.frequency.setValueAtTime(700, this.ctx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.35);
 
     const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
 
     noise.connect(filter);
     filter.connect(gain);
@@ -87,18 +87,16 @@ class RoyalSoundEngine {
     noise.start();
   }
 
-  // Play "Happy Birthday to My Lady" Melody
+  // Happy Birthday Melody
   playBirthdayMelody(onEndCallback) {
     this.stopMelody();
     this.init();
     this.isPlayingMusic = true;
 
-    // Note frequencies
     const C4 = 261.63, D4 = 293.66, E4 = 329.63, F4 = 349.23,
-          G4 = 392.00, A4 = 440.00, Bb4 = 466.16, B4 = 493.88,
+          G4 = 392.00, A4 = 440.00, Bb4 = 466.16,
           C5 = 523.25, D5 = 587.33, E5 = 659.25, F5 = 698.46;
 
-    // Melodic structure of Happy Birthday
     const song = [
       { note: C4, duration: 0.35, delay: 0 },
       { note: C4, duration: 0.25, delay: 400 },
@@ -107,7 +105,6 @@ class RoyalSoundEngine {
       { note: F4, duration: 0.6, delay: 2100 },
       { note: E4, duration: 1.0, delay: 2800 },
 
-      // Happy Birthday to you
       { note: C4, duration: 0.35, delay: 4000 },
       { note: C4, duration: 0.25, delay: 4400 },
       { note: D4, duration: 0.6, delay: 4700 },
@@ -115,7 +112,6 @@ class RoyalSoundEngine {
       { note: G4, duration: 0.6, delay: 6100 },
       { note: F4, duration: 1.0, delay: 6800 },
 
-      // Happy Birthday Dear My Lady
       { note: C4, duration: 0.35, delay: 8000 },
       { note: C4, duration: 0.25, delay: 8400 },
       { note: C5, duration: 0.7, delay: 8700 },
@@ -124,7 +120,6 @@ class RoyalSoundEngine {
       { note: E4, duration: 0.6, delay: 11000 },
       { note: D4, duration: 1.0, delay: 11700 },
 
-      // Happy Birthday to you (Grand finale)
       { note: Bb4, duration: 0.35, delay: 13000 },
       { note: Bb4, duration: 0.25, delay: 13400 },
       { note: A4, duration: 0.7, delay: 13700 },
@@ -135,12 +130,11 @@ class RoyalSoundEngine {
 
     song.forEach(item => {
       const tid = setTimeout(() => {
-        this.playTone(item.note, item.duration, 'triangle', 0.22);
+        this.playTone(item.note, item.duration, 'triangle', 0.2);
       }, item.delay);
       this.melodyTimeouts.push(tid);
     });
 
-    // Finished timeout
     const endTid = setTimeout(() => {
       this.isPlayingMusic = false;
       if (onEndCallback) onEndCallback();
@@ -158,44 +152,46 @@ class RoyalSoundEngine {
 const royalAudio = new RoyalSoundEngine();
 
 // ==========================================================================
-// 2. Fullscreen Confetti & Fireworks Engine
+// 2. Confetti Engine (Editorial Palette Match)
+// Palette: ['#a34e5c', '#e1ae8e', '#d3bd75', '#ebc8bb', '#8c9b7b', '#f4e8db']
 // ==========================================================================
 class ConfettiEngine {
   constructor() {
     this.canvas = document.getElementById('confettiCanvas');
-    this.ctx = this.canvas.getContext('2d');
+    this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
     this.particles = [];
     this.animationId = null;
-    this.resizeCanvas();
-    window.addEventListener('resize', () => this.resizeCanvas());
+    this.themeColors = ['#a34e5c', '#e1ae8e', '#d3bd75', '#ebc8bb', '#8c9b7b', '#f4e8db'];
+
+    if (this.canvas) {
+      this.resizeCanvas();
+      window.addEventListener('resize', () => this.resizeCanvas());
+    }
   }
 
   resizeCanvas() {
+    if (!this.canvas) return;
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
   }
 
-  spawnBurst(x, y, count = 100) {
-    const colors = [
-      '#f5d061', '#ffd54f', '#ff758c', '#ff7eb3', 
-      '#9b51e0', '#70a1ff', '#fff', '#e056fd'
-    ];
-
+  spawnBurst(x, y, count = 90) {
+    if (!this.canvas || !this.ctx) return;
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 12 + 3;
+      const speed = Math.random() * 11 + 3;
       this.particles.push({
         x: x || this.canvas.width / 2,
         y: y || this.canvas.height / 2,
         vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 3,
-        size: Math.random() * 8 + 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        vy: Math.sin(angle) * speed - 2.5,
+        size: Math.random() * 7 + 4,
+        color: this.themeColors[Math.floor(Math.random() * this.themeColors.length)],
         rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 10,
-        gravity: 0.18,
+        rotationSpeed: (Math.random() - 0.5) * 8,
+        gravity: 0.17,
         opacity: 1,
-        decay: Math.random() * 0.012 + 0.008,
+        decay: Math.random() * 0.012 + 0.007,
         shape: Math.random() > 0.4 ? 'rect' : 'circle'
       });
     }
@@ -228,7 +224,7 @@ class ConfettiEngine {
       this.ctx.fillStyle = p.color;
 
       if (p.shape === 'rect') {
-        this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+        this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
       } else {
         this.ctx.beginPath();
         this.ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
@@ -244,33 +240,30 @@ class ConfettiEngine {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
   }
+
+  // DOM Falling Confetti (Matching User's snippet behavior)
+  spawnFallingDOMPieces(count = 55) {
+    for (let i = 0; i < count; i++) {
+      const piece = document.createElement('span');
+      piece.className = 'confetti-piece';
+      piece.setAttribute('aria-hidden', 'true');
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.backgroundColor = this.themeColors[i % this.themeColors.length];
+      piece.style.borderRadius = i % 3 === 0 ? '50%' : '2px';
+      piece.style.setProperty('--duration', (2.5 + Math.random() * 2) + 's');
+      piece.style.setProperty('--drift', (Math.random() * 260 - 130) + 'px');
+      piece.style.setProperty('--spin', (Math.random() * 800 - 400) + 'deg');
+      document.body.appendChild(piece);
+      piece.addEventListener('animationend', () => piece.remove(), { once: true });
+      setTimeout(() => piece.remove(), 5000);
+    }
+  }
 }
 
 const confettiEngine = new ConfettiEngine();
 
 // ==========================================================================
-// 3. Ambient Twinkling Stars
-// ==========================================================================
-function initBackgroundStars() {
-  const container = document.getElementById('floatingStars');
-  if (!container) return;
-  const count = 45;
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement('div');
-    star.className = 'star-particle';
-    const size = Math.random() * 3.5 + 1;
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.animationDelay = `${Math.random() * 4}s`;
-    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-    container.appendChild(star);
-  }
-}
-
-// ==========================================================================
-// 4. Interactive Cake Ceremony Controller
+// 3. Interactive Cake Ceremony Controller
 // ==========================================================================
 function initCakeCeremony() {
   const candles = document.querySelectorAll('.candle');
@@ -294,7 +287,7 @@ function initCakeCeremony() {
         confettiEngine.spawnBurst(
           candle.getBoundingClientRect().left + 10,
           candle.getBoundingClientRect().top,
-          25
+          20
         );
         checkAllCandles();
       }
@@ -309,7 +302,8 @@ function initCakeCeremony() {
       cutBtn.disabled = false;
       statusBanner.innerHTML = '✨ Wonderful wish made! Now, cut the cake for <strong>My Lady</strong>! 🍰';
       royalAudio.playChime();
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 120);
+      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 90);
+      confettiEngine.spawnFallingDOMPieces(35);
     }
   }
 
@@ -322,7 +316,8 @@ function initCakeCeremony() {
     cutBtn.disabled = false;
     statusBanner.innerHTML = '🎉 All candles blown! Now cut the cake for <strong>My Lady</strong>! 🎂';
     royalAudio.playChime();
-    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 150);
+    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 120);
+    confettiEngine.spawnFallingDOMPieces(45);
   });
 
   // Cut Cake Button
@@ -331,16 +326,16 @@ function initCakeCeremony() {
     cakeCut = true;
     cutBtn.disabled = true;
 
-    // Animate knife
     knife.classList.add('cutting');
 
     setTimeout(() => {
       knife.classList.remove('cutting');
       slice.classList.add('served');
-      statusBanner.innerHTML = '👑 <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love! 💖✨';
+      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love! ✨';
       royalAudio.playChime();
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 200);
-    }, 700);
+      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 150);
+      confettiEngine.spawnFallingDOMPieces(50);
+    }, 650);
   });
 
   // Relight / Reset
@@ -351,50 +346,26 @@ function initCakeCeremony() {
     blowBtn.disabled = false;
     cutBtn.disabled = true;
     slice.classList.remove('served');
-    statusBanner.innerHTML = '🕯️ Candles are glowing bright! Blow them out, My Lady!';
+    statusBanner.innerHTML = '🕯️ The candles are glowing softly! Blow them out, My Lady!';
   });
 
   // Melody button
   playMelodyBtn.addEventListener('click', () => {
     if (royalAudio.isPlayingMusic) {
       royalAudio.stopMelody();
-      playMelodyBtn.textContent = '▶️ Play "Happy Birthday My Lady"';
+      playMelodyBtn.textContent = '▶ Play Melody';
     } else {
-      playMelodyBtn.textContent = '⏸️ Pause Melody';
+      playMelodyBtn.textContent = '⏸ Pause Melody';
       royalAudio.playBirthdayMelody(() => {
-        playMelodyBtn.textContent = '▶️ Play "Happy Birthday My Lady"';
+        playMelodyBtn.textContent = '▶ Play Melody';
       });
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 80);
+      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
     }
   });
 }
 
 // ==========================================================================
-// 5. Royal Letter Interaction
-// ==========================================================================
-function initRoyalLetter() {
-  const envelope = document.getElementById('royalEnvelope');
-  const waxSealBtn = document.getElementById('waxSealBtn');
-  const closeLetterBtn = document.getElementById('closeLetterBtn');
-
-  waxSealBtn.addEventListener('click', () => {
-    envelope.classList.add('open');
-    royalAudio.playChime();
-    confettiEngine.spawnBurst(
-      waxSealBtn.getBoundingClientRect().left + 40,
-      waxSealBtn.getBoundingClientRect().top + 40,
-      80
-    );
-  });
-
-  closeLetterBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    envelope.classList.remove('open');
-  });
-}
-
-// ==========================================================================
-// 6. Virtual Gift Box Surprise Unboxing
+// 4. Virtual Gift Box Unboxing
 // ==========================================================================
 function initGiftBox() {
   const giftBoxWrapper = document.getElementById('giftBoxWrapper');
@@ -405,52 +376,53 @@ function initGiftBox() {
   giftBoxWrapper.addEventListener('click', () => {
     if (!giftBox.classList.contains('opened')) {
       giftBox.classList.add('opened');
-      hint.textContent = '🎁 The surprise is unboxed for My Lady!';
+      hint.textContent = '🎁 The surprise is unboxed for My Lady ♡';
       couponsContainer.classList.add('visible');
       royalAudio.playChime();
       confettiEngine.spawnBurst(
         giftBoxWrapper.getBoundingClientRect().left + 80,
         giftBoxWrapper.getBoundingClientRect().top + 50,
-        140
+        110
       );
+      confettiEngine.spawnFallingDOMPieces(40);
     }
   });
 }
 
 // ==========================================================================
-// 7. Photo Memories Gallery & Custom Upload with LocalStorage
+// 5. Photo Memories Gallery & Custom Upload with LocalStorage
 // ==========================================================================
 const DEFAULT_POLAROIDS = [
   {
     title: 'Royalty in Every Step',
     caption: '"Candid perfection, as always!"',
     author: '— To My Lady ✨',
-    emoji: '👑💃',
-    gradient: 'gradient-rose',
+    emoji: '👑',
+    gradient: 'bg-blush-rose',
     isCustom: false
   },
   {
     title: 'The Bestie Laugh',
     caption: '"Inside jokes nobody else understands 😂"',
-    author: '— To My Lady 💖',
-    emoji: '👯‍♀️✨',
-    gradient: 'gradient-purple',
+    author: '— To My Lady ♡',
+    emoji: '👯‍♀️',
+    gradient: 'bg-warm-sand',
     isCustom: false
   },
   {
     title: 'Sunset & Coffee Dates',
     caption: '"Chai, conversations, and endless dreams."',
     author: '— To My Lady 🥂',
-    emoji: '☕🌅',
-    gradient: 'gradient-amber',
+    emoji: '☕',
+    gradient: 'bg-soft-terracotta',
     isCustom: false
   },
   {
-    title: 'Birthday Queen Glow',
+    title: 'Birthday Glow',
     caption: '"Another year of shining bright and staying iconic!"',
     author: '— For My Lady 🌟',
-    emoji: '🎂✨',
-    gradient: 'gradient-pink',
+    emoji: '🌸',
+    gradient: 'bg-linen-gold',
     isCustom: false
   }
 ];
@@ -462,13 +434,11 @@ function initGallery() {
   const lightboxBody = document.getElementById('lightboxBody');
   const lightboxClose = document.getElementById('lightboxCloseBtn');
 
-  // Load custom photos from localStorage
   const savedPhotos = JSON.parse(localStorage.getItem('my_lady_photos') || '[]');
 
   function renderGallery() {
     grid.innerHTML = '';
 
-    // Render default cards
     DEFAULT_POLAROIDS.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = `polaroid-card ${index % 2 === 0 ? 'tilt-left' : 'tilt-right'}`;
@@ -489,7 +459,6 @@ function initGallery() {
       grid.appendChild(card);
     });
 
-    // Render custom uploaded photos
     savedPhotos.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = `polaroid-card ${index % 2 === 0 ? 'tilt-right' : 'tilt-left'}`;
@@ -500,7 +469,7 @@ function initGallery() {
         </div>
         <div class="polaroid-caption">
           <p class="caption-text">"${item.caption}"</p>
-          <span class="caption-author">— Cherished Memory of My Lady 💖</span>
+          <span class="caption-author">— Cherished Memory of My Lady ♡</span>
         </div>
       `;
       card.addEventListener('click', () => openLightbox(item));
@@ -511,17 +480,17 @@ function initGallery() {
   function openLightbox(item) {
     if (item.dataUrl) {
       lightboxBody.innerHTML = `
-        <img src="${item.dataUrl}" style="width:100%; border-radius:12px; margin-bottom:1rem;" alt="Memory of My Lady">
-        <h3 style="font-family:var(--font-royal); color:var(--gold-primary);">${item.caption}</h3>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.4rem;">Dedicated with love to My Lady ✨</p>
+        <img src="${item.dataUrl}" style="width:100%; border-radius:10px; margin-bottom:1rem;" alt="Memory of My Lady">
+        <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.3rem;">${item.caption}</h3>
+        <p style="color:var(--rose); font-size:0.88rem; margin-top:0.3rem;">Dedicated with love to My Lady ♡</p>
       `;
     } else {
       lightboxBody.innerHTML = `
-        <div style="text-align:center; padding:2rem 1rem;">
-          <div style="font-size:4rem; margin-bottom:1rem;">${item.emoji}</div>
-          <h3 style="font-family:var(--font-royal); color:var(--gold-primary); margin-bottom:0.6rem;">${item.title}</h3>
-          <p style="font-family:var(--font-hand); font-size:1.8rem; color:#fff;">${item.caption}</p>
-          <p style="color:var(--rose-primary); font-size:0.9rem; margin-top:0.8rem;">${item.author}</p>
+        <div style="text-align:center; padding:1.5rem 0.5rem;">
+          <div style="font-size:3.5rem; margin-bottom:0.8rem;">${item.emoji}</div>
+          <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.4rem; margin-bottom:0.4rem;">${item.title}</h3>
+          <p style="font-family:var(--font-hand); font-size:1.8rem; color:var(--rose);">${item.caption}</p>
+          <p style="color:var(--muted); font-size:0.85rem; margin-top:0.8rem;">${item.author}</p>
         </div>
       `;
     }
@@ -533,7 +502,6 @@ function initGallery() {
     if (e.target === lightbox) lightbox.close();
   });
 
-  // Handle Photo Upload
   uploadInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -562,35 +530,35 @@ function initGallery() {
 }
 
 // ==========================================================================
-// 8. Wishing Wall with Persistent LocalStorage
+// 6. Wishing Wall with Persistent LocalStorage
 // ==========================================================================
 const DEFAULT_WISHES = [
   {
     author: "Your Bestie's Boyfriend",
     emoji: "👑",
     message: "Happy Birthday, My Lady! Thank you for being the most incredible best friend to my favourite girl and for always bringing so much joy into our lives!",
-    color: "note-yellow",
+    color: "note-paper-1",
     date: "Today"
   },
   {
     author: "Your Soul Sister / Bestie",
-    emoji: "💖",
+    emoji: "♡",
     message: "To My Lady: My forever partner in crime, therapist, and soulmate! Words will never be enough to say how much I adore you. Slay your day, queen!",
-    color: "note-pink",
+    color: "note-paper-2",
     date: "Today"
   },
   {
     author: "The Squad",
     emoji: "🥂",
     message: "Cheers to My Lady! Wishing you an unforgettable year packed with laughter, adventures, delicious food, and unmatched glamour!",
-    color: "note-purple",
+    color: "note-paper-3",
     date: "Today"
   },
   {
-    author: "A Secret Admirer of Your Grace",
-    emoji: "🌟",
+    author: "A Well-Wisher of Your Grace",
+    emoji: "✨",
     message: "My Lady, your smile lights up every room. May this birthday bring you everything your wonderful heart has ever wished for!",
-    color: "note-blue",
+    color: "note-paper-4",
     date: "Today"
   }
 ];
@@ -602,7 +570,7 @@ function initWishingWall() {
   const emojiSelect = document.getElementById('emojiSelect');
   const messageInput = document.getElementById('messageInput');
 
-  const colorClasses = ['note-yellow', 'note-pink', 'note-purple', 'note-blue', 'note-green'];
+  const colorClasses = ['note-paper-1', 'note-paper-2', 'note-paper-3', 'note-paper-4', 'note-paper-5'];
   let customWishes = JSON.parse(localStorage.getItem('my_lady_wishes') || '[]');
 
   function renderWishes() {
@@ -658,19 +626,20 @@ function initWishingWall() {
     form.reset();
 
     royalAudio.playChime();
-    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight * 0.7, 100);
+    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight * 0.7, 80);
+    confettiEngine.spawnFallingDOMPieces(30);
   });
 
   renderWishes();
 }
 
 // ==========================================================================
-// 9. Navbar Actions & Global Triggers
+// 7. Navbar & Celebrate Button Triggers
 // ==========================================================================
 function initNavbarAndGlobals() {
   const musicToggleBtn = document.getElementById('musicToggleBtn');
   const soundWave = document.getElementById('soundWave');
-  const blastNavBtn = document.getElementById('blastConfettiNavBtn');
+  const celebrateBtn = document.getElementById('celebrate-button');
 
   musicToggleBtn.addEventListener('click', () => {
     if (royalAudio.isPlayingMusic) {
@@ -681,19 +650,22 @@ function initNavbarAndGlobals() {
         soundWave.classList.remove('playing');
       });
       soundWave.classList.add('playing');
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 70);
+      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
     }
   });
 
-  blastNavBtn.addEventListener('click', () => {
-    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 140);
-    royalAudio.playChime();
-  });
+  if (celebrateBtn) {
+    celebrateBtn.addEventListener('click', () => {
+      confettiEngine.spawnFallingDOMPieces(65);
+      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 100);
+      royalAudio.playChime();
+    });
+  }
 
-  // Welcome celebration burst on first interaction or initial load
+  // Initial gentle welcome burst
   window.addEventListener('load', () => {
     setTimeout(() => {
-      confettiEngine.spawnBurst(window.innerWidth / 2, 200, 60);
+      confettiEngine.spawnFallingDOMPieces(30);
     }, 400);
   });
 }
@@ -702,9 +674,7 @@ function initNavbarAndGlobals() {
 // Initialization on DOM Ready
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
-  initBackgroundStars();
   initCakeCeremony();
-  initRoyalLetter();
   initGiftBox();
   initGallery();
   initWishingWall();
