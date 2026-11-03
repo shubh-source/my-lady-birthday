@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, My Lady! 👑✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Sparkle & Floating Elements Container -->
+  <div class="ambient-background">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="floating-stars" id="floatingStars"></div>
+  </div>
+
+  <!-- Fullscreen Celebration Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="crown-icon">👑</span>
+        <span class="logo-text">My Lady's Birthday</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#hero">Home</a>
+        <a href="#cake-section">Cake Ceremony</a>
+        <a href="#reasons-section">Special Qualities</a>
+        <a href="#gallery-section">Memories</a>
+        <a href="#letter-section">Royal Letter</a>
+        <a href="#gift-section">Surprise Gift</a>
+        <a href="#wishing-wall">Wishing Wall</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="musicToggleBtn" class="btn-icon" title="Play/Pause Birthday Music" aria-label="Toggle Music">
+          <span id="musicIcon">🎵</span>
+          <span class="sound-wave" id="soundWave">
+            <span></span><span></span><span></span><span></span>
+          </span>
+        </button>
+        <button id="blastConfettiNavBtn" class="btn-primary-mini">
+          🎉 Blast Joy!
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <div class="royal-badge">
+        <span class="sparkle">✨</span> A Royal Celebration for an Extraordinary Soul <span class="sparkle">✨</span>
+      </div>
+
+      <h1 class="hero-title">
+        Happy Birthday, <br>
+        <span class="highlight-name">My Lady</span> <span class="hero-crown">👑</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Wishing the sweetest, most fabulous, and most radiant queen a day as magnificent as her heart!
+        Thank you for being the world's most incredible best friend.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Pure Grace</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">Bestie Loyalty</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Unstoppable Vibe</span>
+        </div>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="#cake-section" class="btn-hero-primary">
+          <span>🎂 Cut the Cake for My Lady</span>
+        </a>
+        <a href="#letter-section" class="btn-hero-secondary">
+          <span>💌 Read the Royal Letter</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="royal-portrait-frame">
+        <div class="frame-glow"></div>
+        <div class="frame-content">
+          <div class="avatar-container">
+            <div class="avatar-crown">👑</div>
+            <div class="avatar-art">
+              <span class="avatar-emoji">👸✨</span>
+            </div>
+          </div>
+          <h2 class="frame-name">My Lady</h2>
+          <p class="frame-title">The Queen of Hearts & Sunshine</p>
+          <div class="frame-tags">
+            <span class="tag">#HappyBirthdayMyLady</span>
+            <span class="tag">#BestieGoals</span>
+            <span class="tag">#ForeverIconic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Birthday Cake Section -->
+  <section id="cake-section" class="section cake-section">
+    <div class="section-header">
+      <span class="subheading">Make a Wish, My Lady! 🌟</span>
+      <h2 class="heading">The Royal Birthday Cake</h2>
+      <p class="section-desc">
+        Click below to blow the candles and cut the delicious celebration cake baked specially for My Lady!
+      </p>
+    </div>
+
+    <div class="cake-ceremony-wrapper">
+      <!-- 3D Interactive Cake -->
+      <div class="cake-display" id="cakeDisplay">
+        <div class="cake-plate">
+          <!-- Cake Top Tier -->
+          <div class="cake-tier tier-top">
+            <div class="icing-dripping"></div>
+            <!-- Candles -->
+            <div class="candles-row" id="candlesRow">
+              <div class="candle" data-candle="1">
+                <div class="flame"></div>
+                <div class="wick"></div>
+                <div class="wax"></div>
+              </div>
+              <div class="candle active-main" data-candle="2">
+                <div class="flame"></div>
+                <div class="wick"></div>
+                <div class="wax"></div>
+              </div>
+              <div class="candle" data-candle="3">
+                <div class="flame"></div>
+                <div class="wick"></div>
+                <div class="wax"></div>
+              </div>
+            </div>
+            <div class="tier-frosting">For My Lady</div>
+          </div>
+          <!-- Cake Middle Tier -->
+          <div class="cake-tier tier-middle">
+            <div class="cream-pearls">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <!-- Cake Bottom Tier -->
+          <div class="cake-tier tier-bottom">
+            <div class="gold-ribbon">
+              <span>💖 Happy Birthday My Lady 💖</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Knife cutting animation container -->
+        <div class="knife-element" id="knifeElement">
+          🔪
+        </div>
+
+        <!-- Cake Slice Animation -->
+        <div class="cake-slice" id="cakeSlice">
+          🍰
+          <span class="slice-note">Served with Love for My Lady!</span>
+        </div>
+      </div>
+
+      <!-- Ceremony Controls -->
+      <div class="ceremony-controls">
+        <div class="status-banner" id="cakeStatusBanner">
+          🕯️ Candles are glowing bright! Blow them out, My Lady!
+        </div>
+
+        <div class="ceremony-btn-group">
+          <button id="blowCandlesBtn" class="btn-ceremony blow-btn">
+            💨 Blow the Candles
+          </button>
+          <button id="cutCakeBtn" class="btn-ceremony cut-btn" disabled>
+            🎂 Cut the Cake
+          </button>
+          <button id="resetCakeBtn" class="btn-ceremony reset-btn">
+            🔄 Relight Candles
+          </button>
+        </div>
+
+        <!-- Melody Player -->
+        <div class="melody-box">
+          <div class="melody-info">
+            <span class="melody-icon">🎶</span>
+            <span class="melody-text">Celebratory Melody for My Lady</span>
+          </div>
+          <button id="playMelodyBtn" class="btn-melody">
+            ▶️ Play "Happy Birthday My Lady"
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crown of Qualities Section -->
+  <section id="reasons-section" class="section reasons-section">
+    <div class="section-header">
+      <span class="subheading">Why She Is One In A Million</span>
+      <h2 class="heading">6 Reasons My Lady Is Unmatched</h2>
+      <p class="section-desc">
+        There are a billion reasons to celebrate My Lady, but here are six superpowers that make her truly unforgettable.
+      </p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Card 1 -->
+      <div class="quality-card">
+        <div class="card-icon-bubble">👑</div>
+        <h3 class="card-title">Pure Royalty & Grace</h3>
+        <p class="card-text">
+          My Lady carries herself with unmatched elegance, poise, and natural warmth. Her energy instantly turns any dull room into a celebration.
+        </p>
+        <span class="card-tag">Queen Behavior</span>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="quality-card">
+        <div class="card-icon-bubble">💎</div>
+        <h3 class="card-title">The Ultimate Bestie</h3>
+        <p class="card-text">
+          Her loyalty to her best friend is solid gold. From 3 AM emergency calls to endless laughter over chai and gossips, My Lady is the true definition of a rock.
+        </p>
+        <span class="card-tag">Pillar of Trust</span>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="quality-card">
+        <div class="card-icon-bubble">😂</div>
+        <h3 class="card-title">The Laugh Generator</h3>
+        <p class="card-text">
+          Nobody can crack a joke or lift the spirits quite like My Lady. One witty reaction from her is enough to erase an entire week of stress!
+        </p>
+        <span class="card-tag">Pure Entertainment</span>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="quality-card">
+        <div class="card-icon-bubble">🛡️</div>
+        <h3 class="card-title">The Secret Keeper</h3>
+        <p class="card-text">
+          Every confession, silly fear, and untold story is safer with My Lady than in a Swiss bank vault. She never judges, always understands.
+        </p>
+        <span class="card-tag">Safe Harbor</span>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="quality-card">
+        <div class="card-icon-bubble">🌟</div>
+        <h3 class="card-title">Unstoppable Dreamer</h3>
+        <p class="card-text">
+          Ambitious, bright, and fiercely passionate. Whenever My Lady sets her mind to something, she conquers it with effortless determination.
+        </p>
+        <span class="card-tag">Born to Shine</span>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="quality-card">
+        <div class="card-icon-bubble">💖</div>
+        <h3 class="card-title">Heart of Pure Kindness</h3>
+        <p class="card-text">
+          Behind all the swag and fun is someone who genuinely cares, supports people selflessly, and sprinkles unconditional kindness everywhere she goes.
+        </p>
+        <span class="card-tag">Gold Standard</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Memories Gallery Section -->
+  <section id="gallery-section" class="section gallery-section">
+    <div class="section-header">
+      <span class="subheading">Capturing the Moments</span>
+      <h2 class="heading">Moments & Memories of My Lady</h2>
+      <p class="section-desc">
+        Glimpses of beauty, joy, and unforgettable fun! You can also upload your own favorite photos of My Lady directly below.
+      </p>
+    </div>
+
+    <!-- Upload custom photo bar -->
+    <div class="gallery-upload-bar">
+      <label for="photoUploadInput" class="btn-upload">
+        📷 Add a Real Photo of My Lady
+      </label>
+      <input type="file" id="photoUploadInput" accept="image/*" style="display:none;">
+      <span class="upload-hint">Upload any cute memory — it will be saved right here!</span>
+    </div>
+
+    <!-- Polaroids Grid -->
+    <div class="polaroid-grid" id="polaroidGrid">
+      <!-- Default Polaroid 1 -->
+      <div class="polaroid-card tilt-left" data-title="Royalty in Every Step">
+        <div class="tape-strip"></div>
+        <div class="polaroid-img-wrapper">
+          <div class="polaroid-placeholder gradient-rose">
+            <span class="placeholder-emoji">👑💃</span>
+            <span class="placeholder-text">My Lady Looking Stunning</span>
+          </div>
+        </div>
+        <div class="polaroid-caption">
+          <p class="caption-text">"Candid perfection, as always!"</p>
+          <span class="caption-author">— To My Lady ✨</span>
+        </div>
+      </div>
+
+      <!-- Default Polaroid 2 -->
+      <div class="polaroid-card tilt-right" data-title="The Bestie Laugh">
+        <div class="tape-strip"></div>
+        <div class="polaroid-img-wrapper">
+          <div class="polaroid-placeholder gradient-purple">
+            <span class="placeholder-emoji">👯‍♀️✨</span>
+            <span class="placeholder-text">Unfiltered Laughter with Bestie</span>
+          </div>
+        </div>
+        <div class="polaroid-caption">
+          <p class="caption-text">"Inside jokes nobody else understands 😂"</p>
+          <span class="caption-author">— To My Lady 💖</span>
+        </div>
+      </div>
+
+      <!-- Default Polaroid 3 -->
+      <div class="polaroid-card tilt-left" data-title="Sunset & Coffee Dates">
+        <div class="tape-strip"></div>
+        <div class="polaroid-img-wrapper">
+          <div class="polaroid-placeholder gradient-amber">
+            <span class="placeholder-emoji">☕🌅</span>
+            <span class="placeholder-text">Warm Chats & Golden Hours</span>
+          </div>
+        </div>
+        <div class="polaroid-caption">
+          <p class="caption-text">"Chai, conversations, and endless dreams."</p>
+          <span class="caption-author">— To My Lady 🥂</span>
+        </div>
+      </div>
+
+      <!-- Default Polaroid 4 -->
+      <div class="polaroid-card tilt-right" data-title="Birthday Queen Glow">
+        <div class="tape-strip"></div>
+        <div class="polaroid-img-wrapper">
+          <div class="polaroid-placeholder gradient-pink">
+            <span class="placeholder-emoji">🎂✨</span>
+            <span class="placeholder-text">Birthday Queen Celebrating</span>
+          </div>
+        </div>
+        <div class="polaroid-caption">
+          <p class="caption-text">"Another year of shining bright and staying iconic!"</p>
+          <span class="caption-author">— For My Lady 🌟</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Royal Letter Section -->
+  <section id="letter-section" class="section letter-section">
+    <div class="section-header">
+      <span class="subheading">Directly From the Heart</span>
+      <h2 class="heading">A Royal Letter to My Lady</h2>
+      <p class="section-desc">
+        Click the golden wax seal below to break the seal and unfold the special letter written for My Lady.
+      </p>
+    </div>
+
+    <div class="envelope-container">
+      <!-- Interactive Envelope -->
+      <div class="royal-envelope" id="royalEnvelope">
+        <div class="envelope-flap" id="envelopeFlap"></div>
+        <div class="envelope-pocket"></div>
+        
+        <!-- Wax Seal -->
+        <button class="wax-seal" id="waxSealBtn" aria-label="Open Royal Letter for My Lady">
+          <span class="seal-icon">👑</span>
+          <span class="seal-text">FOR MY LADY</span>
+        </button>
+
+        <!-- The Letter Sheet -->
+        <div class="letter-sheet" id="letterSheet">
+          <div class="letter-ornament">⚜️ ⚜️ ⚜️</div>
+          <div class="letter-header">
+            <h3>Dearest My Lady,</h3>
+            <span class="letter-date">On Your Most Special Day</span>
+          </div>
+          <div class="letter-body">
+            <p>
+              Today marks the celebration of a truly rare, remarkable, and radiant human being — <strong>My Lady</strong>.
+            </p>
+            <p>
+              I wanted to take this special moment to tell you how deeply appreciated you are. Seeing the bond you share with your best friend is truly heartwarming. You aren't just a best friend; you are her anchor, her loudest cheerleader, her partner in crime, and her safest confidante.
+            </p>
+            <p>
+              Thank you for always bringing so much warmth, comfort, and boundless laughter into our lives. Thank you for listening to every little drama, for celebrating every victory, and for being someone we can always count on.
+            </p>
+            <p>
+              May this new chapter bring you endless success, radiant health, peace of mind, and all the love the universe has to offer. Keep dreaming fearlessly and walking with that royal grace, because the world is infinitely better with you in it.
+            </p>
+            <p class="letter-closing">
+              Always cheering for you, <br>
+              <strong>With utmost respect and highest regards,</strong><br>
+              <span class="signature">Your Bestie & Friend 💖</span>
+            </p>
+          </div>
+          <button class="btn-close-letter" id="closeLetterBtn">Fold Letter Back</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Virtual Surprise Gift Box Section -->
+  <section id="gift-section" class="section gift-section">
+    <div class="section-header">
+      <span class="subheading">Surprise Unboxing</span>
+      <h2 class="heading">A Gift Box for My Lady</h2>
+      <p class="section-desc">
+        Tap the gift box below to untie the ribbon and unwrap four exclusive bestie VIP passes for My Lady!
+      </p>
+    </div>
+
+    <div class="gift-showcase">
+      <!-- 3D Gift Box Container -->
+      <div class="gift-box-wrapper" id="giftBoxWrapper">
+        <div class="gift-box" id="giftBox">
+          <div class="box-lid" id="boxLid">
+            <div class="ribbon-bow">🎀</div>
+            <div class="ribbon-v"></div>
+          </div>
+          <div class="box-body">
+            <div class="ribbon-v"></div>
+            <div class="ribbon-h"></div>
+            <span class="gift-tag">For My Lady 💝</span>
+          </div>
+        </div>
+        <p class="tap-hint" id="giftTapHint">👆 Tap the box to open My Lady's surprise!</p>
+      </div>
+
+      <!-- Revealed Coupons Modal / Grid -->
+      <div class="coupons-container" id="couponsContainer">
+        <h3 class="coupons-title">🎉 Surprise Unlocked! VIP Passes for My Lady 🎉</h3>
+        <div class="coupons-grid">
+          <!-- Coupon 1 -->
+          <div class="coupon-card">
+            <div class="coupon-badge">PASS #1</div>
+            <div class="coupon-icon">☕🍰</div>
+            <h4>Chai & Dessert On Demand</h4>
+            <p>Valid anytime My Lady craves sweet treats, hot coffee, or dessert therapy. No questions asked!</p>
+            <div class="coupon-status">Redeemable: Unlimited</div>
+          </div>
+
+          <!-- Coupon 2 -->
+          <div class="coupon-card">
+            <div class="coupon-badge">PASS #2</div>
+            <div class="coupon-icon">📞✨</div>
+            <h4>24/7 Midnight Venting Line</h4>
+            <p>Direct line to complain about work, life, or any boy drama. 100% agreement and loyalty guaranteed!</p>
+            <div class="coupon-status">Redeemable: Lifetime</div>
+          </div>
+
+          <!-- Coupon 3 -->
+          <div class="coupon-card">
+            <div class="coupon-badge">PASS #3</div>
+            <div class="coupon-icon">🛍️💄</div>
+            <h4>Guilt-Free Shopping Partner</h4>
+            <p>A companion who will encourage My Lady to treat herself because "she honestly deserves it!"</p>
+            <div class="coupon-status">Redeemable: Always Active</div>
+          </div>
+
+          <!-- Coupon 4 -->
+          <div class="coupon-card">
+            <div class="coupon-badge">PASS #4</div>
+            <div class="coupon-icon">🌟👑</div>
+            <h4>One Big Birthday Wish</h4>
+            <p>One special wish to be granted by the universe and your loved ones. Dream as big as you want, My Lady!</p>
+            <div class="coupon-status">Redeemable: Today & Forever</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Wishing Wall Section -->
+  <section id="wishing-wall" class="section wishing-wall-section">
+    <div class="section-header">
+      <span class="subheading">Leave Your Heartfelt Note</span>
+      <h2 class="heading">The Wishing Wall for My Lady</h2>
+      <p class="section-desc">
+        Pin your loving birthday wishes and blessings for My Lady on this board! They will be preserved forever.
+      </p>
+    </div>
+
+    <!-- Wish Input Card -->
+    <div class="wish-input-container">
+      <form id="wishForm" class="wish-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="authorInput">Your Name</label>
+            <input type="text" id="authorInput" placeholder="e.g. Bestie, Friend, Secret Admirer" required>
+          </div>
+          <div class="form-group">
+            <label for="emojiSelect">Select Vibe</label>
+            <select id="emojiSelect">
+              <option value="👑">👑 Royal Queen</option>
+              <option value="💖">💖 Pure Love</option>
+              <option value="🎂">🎂 Birthday Treat</option>
+              <option value="🌟">🌟 Superstar</option>
+              <option value="🥂">🥂 Cheers & Joy</option>
+              <option value="🌸">🌸 Blossom & Grace</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="messageInput">Your Birthday Message for My Lady</label>
+          <textarea id="messageInput" rows="3" placeholder="Write something sweet, funny, or heartfelt for My Lady..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit-wish">
+          📌 Pin Note for My Lady
+        </button>
+      </form>
+    </div>
+
+    <!-- Wall Pinboard Grid -->
+    <div class="wall-board" id="wallBoard">
+      <!-- Notes will be inserted dynamically by JS -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">👑 My Lady's Birthday Celebration</div>
+      <p class="footer-message">
+        Crafted with deep appreciation and warmest wishes for the one and only <strong>My Lady</strong>.
+      </p>
+      <p class="footer-copyright">
+        May every year be brighter than the last. Happy Birthday, My Lady! 🥂🎂✨
+      </p>
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal for Photo viewing -->
+  <dialog class="lightbox-dialog" id="lightboxDialog">
+    <div class="dialog-content">
+      <button class="dialog-close" id="lightboxCloseBtn" aria-label="Close photo preview">✕</button>
+      <div class="dialog-body" id="lightboxBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
