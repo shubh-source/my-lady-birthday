@@ -49,6 +49,43 @@ body.page-body {
   line-height: 1.6;
 }
 
+/* ==========================================================================
+   Smooth Page Transitions
+   ========================================================================== */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: 0.28s ease-out both pageFadeOut;
+}
+
+::view-transition-new(root) {
+  animation: 0.32s cubic-bezier(0.16, 1, 0.3, 1) both pageFadeIn;
+}
+
+@keyframes pageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .page-shell {
   width: 100%;
   min-height: 100vh;
@@ -58,6 +95,31 @@ body.page-body {
   position: relative;
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), filter 0.26s ease;
+  will-change: opacity, transform;
+}
+
+body.page-transitioning .page-shell {
+  opacity: 0 !important;
+  transform: translateY(-8px) scale(0.995) !important;
+  filter: blur(1.5px) !important;
+}
+
+body.page-entering .page-shell {
+  animation: pageSoftEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageSoftEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Typography Helpers */

@@ -806,9 +806,64 @@ function initGlobalTapMelody() {
 }
 
 // ==========================================================================
+// 7. Smooth Page Transitions (Fluid Navigation Between Chapters)
+// ==========================================================================
+function initPageTransitions() {
+  document.body.classList.add('page-entering');
+  setTimeout(() => {
+    document.body.classList.remove('page-entering');
+  }, 450);
+
+  // Restore page visibility if user navigates via browser back/forward (bfcache)
+  window.addEventListener('pageshow', () => {
+    document.body.classList.remove('page-transitioning');
+  });
+
+  // Intercept clicks on links for smooth page gliding
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a');
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href');
+    if (!href) return;
+
+    // Ignore anchors, external links, mailto, tel, downloads, or special clicks
+    if (
+      href.startsWith('#') ||
+      href.startsWith('mailto:') ||
+      href.startsWith('tel:') ||
+      href.startsWith('javascript:') ||
+      anchor.target === '_blank' ||
+      anchor.hasAttribute('download') ||
+      e.ctrlKey ||
+      e.metaKey ||
+      e.shiftKey ||
+      e.altKey
+    ) {
+      return;
+    }
+
+    // Check if the link points to a page on the same site
+    const targetUrl = new URL(anchor.href, window.location.href);
+    const isSameSite = targetUrl.origin === window.location.origin;
+
+    if (!isSameSite) return;
+
+    // Smooth transition
+    e.preventDefault();
+    document.body.classList.add('page-transitioning');
+
+    setTimeout(() => {
+      window.location.href = anchor.href;
+    }, 240);
+  });
+}
+
+// ==========================================================================
 // Initialization on DOM Ready
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initPageTransitions();
   initCakeCeremony();
   initGiftBox();
   initGallery();
