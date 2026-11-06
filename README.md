@@ -37,10 +37,6 @@ This website is organized into separate, beautifully interconnected rooms / page
 6. **🎁 Surprise Gift Box (`gifts.html`)**:
    - 3D styled gift box with dusty rose ribbons.
    - Tap to unbox 4 exclusive Bestie VIP passes (Chai & Dessert, 24/7 Venting Hotline, Shopping Spree Partner, and One Big Birthday Wish).
-
-7. **📌 The Wishing Wall (`wishes.html`)**:
-   - Interactive pastel sticky notes board.
-   - Form to add new messages with custom emojis — saved permanently in `localStorage`!
    - Grand celebration finale banner with celebratory confetti explosions.
 
 ---

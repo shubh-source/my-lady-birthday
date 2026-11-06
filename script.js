@@ -4,7 +4,7 @@
  * Features:
  * - Canvas & DOM Confetti Engine in warm editorial tones
  * - Web Audio API Synthesizer (Happy Birthday Melody + Sound Effects)
- * - Page-specific initializers (Cake Ceremony, Gift Unboxing, Gallery, Wishing Wall)
+ * - Page-specific initializers (Cake Ceremony, Gift Unboxing, Gallery)
  * - Active Navigation detection
  */
 
@@ -530,115 +530,7 @@ function initGallery() {
 }
 
 // ==========================================================================
-// 6. Wishing Wall Initializer
-// ==========================================================================
-const DEFAULT_WISHES = [
-  {
-    author: "Your Bestie's Boyfriend",
-    emoji: "👑",
-    message: "Happy Birthday, My Lady! Thank you for being the most incredible best friend to my favourite girl and for always bringing so much joy into our lives!",
-    color: "note-paper-1",
-    date: "Today"
-  },
-  {
-    author: "Your Soul Sister / Bestie",
-    emoji: "♡",
-    message: "To My Lady: My forever partner in crime, therapist, and soulmate! Words will never be enough to say how much I adore you. Slay your day, queen!",
-    color: "note-paper-2",
-    date: "Today"
-  },
-  {
-    author: "The Squad",
-    emoji: "🥂",
-    message: "Cheers to My Lady! Wishing you an unforgettable year packed with laughter, adventures, delicious food, and unmatched glamour!",
-    color: "note-paper-3",
-    date: "Today"
-  },
-  {
-    author: "A Well-Wisher of Your Grace",
-    emoji: "✨",
-    message: "My Lady, your smile lights up every room. May this birthday bring you everything your wonderful heart has ever wished for!",
-    color: "note-paper-4",
-    date: "Today"
-  }
-];
-
-function initWishingWall() {
-  const board = document.getElementById('wallBoard');
-  const form = document.getElementById('wishForm');
-  const authorInput = document.getElementById('authorInput');
-  const emojiSelect = document.getElementById('emojiSelect');
-  const messageInput = document.getElementById('messageInput');
-
-  if (!board) return;
-
-  const colorClasses = ['note-paper-1', 'note-paper-2', 'note-paper-3', 'note-paper-4', 'note-paper-5'];
-  let customWishes = JSON.parse(localStorage.getItem('my_lady_wishes') || '[]');
-
-  function renderWishes() {
-    board.innerHTML = '';
-    const allWishes = [...customWishes, ...DEFAULT_WISHES];
-
-    allWishes.forEach(w => {
-      const note = document.createElement('div');
-      note.className = `wish-note ${w.color}`;
-      note.innerHTML = `
-        <div class="note-pin"></div>
-        <div class="note-header">
-          <span class="note-author">${escapeHtml(w.author)}</span>
-          <span class="note-emoji">${w.emoji}</span>
-        </div>
-        <p class="note-message">"${escapeHtml(w.message)}"</p>
-        <span class="note-date">— To My Lady (${escapeHtml(w.date)})</span>
-      `;
-      board.appendChild(note);
-    });
-  }
-
-  function escapeHtml(str) {
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const author = authorInput.value.trim();
-      const emoji = emojiSelect.value;
-      const message = messageInput.value.trim();
-
-      if (!author || !message) return;
-
-      const randomColor = colorClasses[Math.floor(Math.random() * colorClasses.length)];
-      const newWish = {
-        author: author,
-        emoji: emoji,
-        message: message,
-        color: randomColor,
-        date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-      };
-
-      customWishes.unshift(newWish);
-      localStorage.setItem('my_lady_wishes', JSON.stringify(customWishes));
-
-      renderWishes();
-      form.reset();
-
-      royalAudio.playChime();
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight * 0.7, 80);
-      confettiEngine.spawnFallingDOMPieces(30);
-    });
-  }
-
-  renderWishes();
-}
-
-// ==========================================================================
-// 7. Navbar & Celebrate Button Triggers
+// 6. Navbar & Celebrate Button Triggers
 // ==========================================================================
 function initNavbarAndGlobals() {
   const musicToggleBtn = document.getElementById('musicToggleBtn');
@@ -676,6 +568,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initCakeCeremony();
   initGiftBox();
   initGallery();
-  initWishingWall();
   initNavbarAndGlobals();
 });
