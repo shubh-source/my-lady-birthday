@@ -279,10 +279,11 @@ class ConfettiEngine {
 const confettiEngine = new ConfettiEngine();
 
 // ==========================================================================
-// 3. Cake Ceremony Initializer
+// 3. Cake Ceremony Initializer (Real Microphone Breath Blow + Tap Support)
 // ==========================================================================
 function initCakeCeremony() {
   const candles = document.querySelectorAll('.candle');
+  const micBlowBtn = document.getElementById('micBlowBtn');
   const blowBtn = document.getElementById('blowCandlesBtn');
   const cutBtn = document.getElementById('cutCakeBtn');
   const resetBtn = document.getElementById('resetCakeBtn');
@@ -294,7 +295,58 @@ function initCakeCeremony() {
 
   let candlesBlown = false;
   let cakeCut = false;
+  let micStream = null;
+  let micAudioCtx = null;
+  let micAnimId = null;
 
+  function stopMicDetection() {
+    if (micAnimId) {
+      cancelAnimationFrame(micAnimId);
+      micAnimId = null;
+    }
+    if (micStream) {
+      micStream.getTracks().forEach(t => t.stop());
+      micStream = null;
+    }
+    if (micAudioCtx && micAudioCtx.state !== 'closed') {
+      micAudioCtx.close().catch(() => {});
+      micAudioCtx = null;
+    }
+    if (micBlowBtn) {
+      micBlowBtn.classList.remove('listening');
+      if (!candlesBlown) {
+        micBlowBtn.textContent = '🎙️ Blow with Mic (Real Breath)';
+      }
+    }
+  }
+
+  function triggerCandleExtinguish(blownByBreath = false) {
+    if (candlesBlown) return;
+    candlesBlown = true;
+    stopMicDetection();
+
+    candles.forEach(candle => candle.classList.add('blown-out'));
+    royalAudio.playWhoosh();
+
+    if (blowBtn) blowBtn.disabled = true;
+    if (micBlowBtn) {
+      micBlowBtn.disabled = true;
+      micBlowBtn.textContent = '💨 Candles Blown!';
+    }
+    cutBtn.disabled = false;
+
+    if (blownByBreath) {
+      statusBanner.innerHTML = '🎉 <strong>Woohoo! You blew out the candles with your breath, My Lady!</strong> 🎂 Now cut the cake across the miles!';
+    } else {
+      statusBanner.innerHTML = '🎉 <strong>All candles blown! Cut the cake for My Lady!</strong> 🎂';
+    }
+
+    royalAudio.playChime();
+    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 120);
+    confettiEngine.spawnFallingDOMPieces(45);
+  }
+
+  // Individual candle clicks
   candles.forEach(candle => {
     candle.addEventListener('click', () => {
       if (!candle.classList.contains('blown-out')) {
@@ -313,28 +365,98 @@ function initCakeCeremony() {
   function checkAllCandles() {
     const allBlown = Array.from(candles).every(c => c.classList.contains('blown-out'));
     if (allBlown && !candlesBlown) {
-      candlesBlown = true;
-      blowBtn.disabled = true;
-      cutBtn.disabled = false;
-      statusBanner.innerHTML = '✨ Wonderful wish made, My Lady! Now, cut the cake across the miles! 🍰';
-      royalAudio.playChime();
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 90);
-      confettiEngine.spawnFallingDOMPieces(35);
+      triggerCandleExtinguish(false);
     }
   }
 
+  // Tap to Blow button
   blowBtn.addEventListener('click', () => {
-    candles.forEach(candle => candle.classList.add('blown-out'));
-    royalAudio.playWhoosh();
-    candlesBlown = true;
-    blowBtn.disabled = true;
-    cutBtn.disabled = false;
-    statusBanner.innerHTML = '🎉 All candles blown! Cut the cake for My Lady! 🎂';
-    royalAudio.playChime();
-    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 120);
-    confettiEngine.spawnFallingDOMPieces(45);
+    triggerCandleExtinguish(false);
   });
 
+  // Real Microphone Blow Detection
+  if (micBlowBtn) {
+    micBlowBtn.addEventListener('click', () => {
+      if (candlesBlown) return;
+
+      // If already active, toggle off
+      if (micBlowBtn.classList.contains('listening')) {
+        stopMicDetection();
+        statusBanner.innerHTML = '🕯️ Microphone stopped. You can tap "Blow with Mic" or "Tap to Blow" anytime!';
+        return;
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusBanner.innerHTML = '⚠️ Microphone is not supported on this browser. Please use "Tap to Blow"!';
+        return;
+      }
+
+      statusBanner.innerHTML = '🎙️ <em>Requesting microphone access... Please tap "Allow"!</em>';
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          micStream = stream;
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          micAudioCtx = new AudioCtx();
+          const source = micAudioCtx.createMediaStreamSource(stream);
+          const analyser = micAudioCtx.createAnalyser();
+          analyser.fftSize = 512;
+          analyser.smoothingTimeConstant = 0.25;
+          source.connect(analyser);
+
+          micBlowBtn.classList.add('listening');
+          micBlowBtn.textContent = '🌬️ Listening... Blow into mic now!';
+          statusBanner.innerHTML = '🎙️ <strong>Microphone active! Blow gently onto your phone\'s microphone to extinguish the candles, My Lady! 🌬️</strong>';
+
+          const bufferLength = analyser.frequencyBinCount;
+          const dataArray = new Uint8Array(bufferLength);
+          let consecutiveBlowCount = 0;
+
+          const checkBreath = () => {
+            if (!micStream || candlesBlown) return;
+            analyser.getByteFrequencyData(dataArray);
+
+            // Blowing air into mic creates turbulent low-frequency vibration (bins 0-32) and high amplitude
+            let lowSum = 0;
+            let totalSum = 0;
+            const lowRange = Math.min(32, bufferLength);
+
+            for (let i = 0; i < bufferLength; i++) {
+              totalSum += dataArray[i];
+              if (i < lowRange) {
+                lowSum += dataArray[i];
+              }
+            }
+
+            const avgVolume = totalSum / bufferLength;
+            const avgLow = lowSum / lowRange;
+
+            // Blow detection threshold:
+            // When blowing on phone mic, turbulence causes low freq energy and volume to jump
+            if (avgLow > 45 || avgVolume > 35) {
+              consecutiveBlowCount++;
+              if (consecutiveBlowCount >= 2) {
+                triggerCandleExtinguish(true);
+                return;
+              }
+            } else {
+              consecutiveBlowCount = Math.max(0, consecutiveBlowCount - 1);
+            }
+
+            micAnimId = requestAnimationFrame(checkBreath);
+          };
+
+          micAnimId = requestAnimationFrame(checkBreath);
+        })
+        .catch(err => {
+          console.warn('Microphone permission or access error:', err);
+          stopMicDetection();
+          statusBanner.innerHTML = '💡 Microphone permission not granted. You can use <strong>"Tap to Blow"</strong> anytime!';
+        });
+    });
+  }
+
+  // Cut cake button
   cutBtn.addEventListener('click', () => {
     if (!candlesBlown || cakeCut) return;
     cakeCut = true;
@@ -352,11 +474,18 @@ function initCakeCeremony() {
     }, 650);
   });
 
+  // Reset / Relight button
   resetBtn.addEventListener('click', () => {
+    stopMicDetection();
     candles.forEach(c => c.classList.remove('blown-out'));
     candlesBlown = false;
     cakeCut = false;
     blowBtn.disabled = false;
+    if (micBlowBtn) {
+      micBlowBtn.disabled = false;
+      micBlowBtn.textContent = '🎙️ Blow with Mic (Real Breath)';
+      micBlowBtn.classList.remove('listening');
+    }
     cutBtn.disabled = true;
     slice.classList.remove('served');
     statusBanner.innerHTML = '🕯️ The candles are glowing softly! Blow them out, My Lady!';
