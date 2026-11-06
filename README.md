@@ -46,7 +46,7 @@ Every section, letter, and card is dedicated to **My Lady** from her best friend
 
 7. **🎁 Bestie Surprise Box (`gifts.html`)**:
    - 3D styled gift box with dusty rose ribbons.
-   - Tap to unbox 4 exclusive Bestie VIP passes (Reunion Chai & Dessert Date, 24/7 Long-Distance Hotline, Virtual Shopping Spree, and One Big Birthday Wish).
+   - Tap to unbox 4 exclusive Bestie VIP passes (Reunion Coffee & Dessert Date, 24/7 Long-Distance Hotline, Virtual Shopping Spree, and One Big Birthday Wish).
    - Grand celebration finale banner with celebratory confetti explosions.
 
 ---
