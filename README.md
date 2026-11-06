@@ -19,8 +19,7 @@ Every section, letter, and card is dedicated to **My Lady** from her best friend
 1. **🏠 Home / Overview (`index.html`)**:
    - Editorial Hero dedicated to My Lady across the miles.
    - Arched portrait frame with floating `✷` star.
-   - Quick Portal Cards to each celebration room.
-   - "Begin Celebration 🎂 ↗" button.
+   - A single primary inviting CTA: "Begin Celebration 🎂 ↗" (leading directly into Chapter 1 without spoiling the surprise).
 
 2. **🎂 The Cake Ceremony (`cake.html`)**:
    - 3D interactive multi-tier cake with lit candles.
