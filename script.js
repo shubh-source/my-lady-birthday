@@ -77,10 +77,12 @@ class RoyalSoundEngine {
     noise.start();
   }
 
-  playBirthdayMelody(onEndCallback) {
+  playBirthdayMelody(loop = true, onEndCallback) {
     this.stopMelody();
     this.init();
     this.isPlayingMusic = true;
+    sessionStorage.setItem('melodyActive', 'true');
+    this.updateSoundWaveUI(true);
 
     const C4 = 261.63, D4 = 293.66, E4 = 329.63, F4 = 349.23,
           G4 = 392.00, A4 = 440.00, Bb4 = 466.16,
@@ -119,14 +121,27 @@ class RoyalSoundEngine {
 
     song.forEach(item => {
       const tid = setTimeout(() => {
-        this.playTone(item.note, item.duration, 'triangle', 0.2);
+        if (!this.isPlayingMusic) return;
+        this.playTone(item.note, item.duration, 'triangle', 0.18);
       }, item.delay);
       this.melodyTimeouts.push(tid);
     });
 
     const endTid = setTimeout(() => {
-      this.isPlayingMusic = false;
-      if (onEndCallback) onEndCallback();
+      if (!this.isPlayingMusic) return;
+      if (loop) {
+        // Subtle pause before seamless replay
+        const loopTid = setTimeout(() => {
+          if (this.isPlayingMusic) {
+            this.playBirthdayMelody(true, onEndCallback);
+          }
+        }, 1500);
+        this.melodyTimeouts.push(loopTid);
+      } else {
+        this.isPlayingMusic = false;
+        this.updateSoundWaveUI(false);
+        if (onEndCallback) onEndCallback();
+      }
     }, 18000);
     this.melodyTimeouts.push(endTid);
   }
@@ -135,6 +150,19 @@ class RoyalSoundEngine {
     this.melodyTimeouts.forEach(clearTimeout);
     this.melodyTimeouts = [];
     this.isPlayingMusic = false;
+    sessionStorage.setItem('melodyActive', 'false');
+    this.updateSoundWaveUI(false);
+  }
+
+  updateSoundWaveUI(active) {
+    const soundWave = document.getElementById('soundWave');
+    if (soundWave) {
+      if (active) {
+        soundWave.classList.add('playing');
+      } else {
+        soundWave.classList.remove('playing');
+      }
+    }
   }
 }
 
@@ -261,7 +289,6 @@ function initCakeCeremony() {
   const statusBanner = document.getElementById('cakeStatusBanner');
   const knife = document.getElementById('knifeElement');
   const slice = document.getElementById('cakeSlice');
-  const playMelodyBtn = document.getElementById('playMelodyBtn');
 
   if (!candles.length || !blowBtn || !cutBtn) return;
 
@@ -334,21 +361,6 @@ function initCakeCeremony() {
     slice.classList.remove('served');
     statusBanner.innerHTML = '🕯️ The candles are glowing softly! Blow them out, My Lady!';
   });
-
-  if (playMelodyBtn) {
-    playMelodyBtn.addEventListener('click', () => {
-      if (royalAudio.isPlayingMusic) {
-        royalAudio.stopMelody();
-        playMelodyBtn.textContent = '▶ Play Melody';
-      } else {
-        playMelodyBtn.textContent = '⏸ Pause Melody';
-        royalAudio.playBirthdayMelody(() => {
-          playMelodyBtn.textContent = '▶ Play Melody';
-        });
-        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
-      }
-    });
-  }
 }
 
 // ==========================================================================
@@ -526,24 +538,20 @@ function initGallery() {
 }
 
 // ==========================================================================
-// 6. Navbar & Celebrate Button Triggers
+// 6. Navbar, First-Tap Global Melody & Celebrate Button Triggers
 // ==========================================================================
 function initNavbarAndGlobals() {
   const musicToggleBtn = document.getElementById('musicToggleBtn');
-  const soundWave = document.getElementById('soundWave');
   const celebrateBtn = document.getElementById('celebrate-button');
 
-  if (musicToggleBtn && soundWave) {
-    musicToggleBtn.addEventListener('click', () => {
+  if (musicToggleBtn) {
+    musicToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (royalAudio.isPlayingMusic) {
         royalAudio.stopMelody();
-        soundWave.classList.remove('playing');
       } else {
-        royalAudio.playBirthdayMelody(() => {
-          soundWave.classList.remove('playing');
-        });
-        soundWave.classList.add('playing');
-        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
+        royalAudio.playBirthdayMelody(true);
+        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 50);
       }
     });
   }
@@ -554,6 +562,70 @@ function initNavbarAndGlobals() {
       confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 100);
       royalAudio.playChime();
     });
+  }
+
+  // Activate melody on the very first click or tap anywhere on the display
+  initGlobalTapMelody();
+}
+
+/**
+ * Activates birthday melody on the very first click/tap anywhere on the screen
+ */
+function initGlobalTapMelody() {
+  // If user explicitly paused/muted melody during this session, do not force-start
+  if (sessionStorage.getItem('melodyActive') === 'false') {
+    return;
+  }
+
+  let activated = false;
+
+  const triggerMelodyOnFirstTap = (evt) => {
+    if (activated) return;
+
+    // If user clicked the music toggle button in the header, let that handler manage it
+    if (evt && evt.target && evt.target.closest('#musicToggleBtn')) {
+      return;
+    }
+
+    activated = true;
+
+    // Start warm birthday music-box melody in loop
+    royalAudio.playBirthdayMelody(true);
+
+    // Clean up one-time listeners
+    removeTriggerListeners();
+  };
+
+  const removeTriggerListeners = () => {
+    const eventTypes = ['pointerdown', 'touchstart', 'mousedown', 'click', 'keydown'];
+    eventTypes.forEach(type => {
+      window.removeEventListener(type, triggerMelodyOnFirstTap, true);
+      document.removeEventListener(type, triggerMelodyOnFirstTap, true);
+    });
+  };
+
+  const eventTypes = ['pointerdown', 'touchstart', 'mousedown', 'click', 'keydown'];
+  eventTypes.forEach(type => {
+    window.addEventListener(type, triggerMelodyOnFirstTap, { capture: true, passive: true });
+    document.addEventListener(type, triggerMelodyOnFirstTap, { capture: true, passive: true });
+  });
+
+  // If the browser already permits AudioContext without a new user gesture
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) {
+      const probeCtx = new AudioContext();
+      if (probeCtx.state === 'running') {
+        probeCtx.close();
+        royalAudio.playBirthdayMelody(true);
+        activated = true;
+        removeTriggerListeners();
+      } else {
+        probeCtx.close();
+      }
+    }
+  } catch (err) {
+    // Awaiting first tap
   }
 }
 
