@@ -16,30 +16,35 @@ Every section, letter, and card is dedicated to **My Lady** from her best friend
 
 ## 📑 Multi-Page Structure
 
-1. **🏠 Home / Overview (`index.html`)**:
+1. **💌 Welcome Invitation (`index.html`)**:
+   - Royal wax seal invitation card addressed exclusively to **My Lady**.
+   - Touching bestie distance quote: *"No matter how much the distance between us, our bond will remain the same always."*
+   - Interactive button: *"Step Inside Your Celebration 🗝️ ↗"* linking to the main editorial cover.
+
+2. **🏠 Main Editorial Cover (`home.html`)**:
    - Editorial Hero dedicated to My Lady across the miles.
    - Arched portrait frame with floating `✷` star.
-   - A single primary inviting CTA: "Begin Celebration 🎂 ↗" (leading directly into Chapter 1 without spoiling the surprise).
+   - Clean, spoiler-free navigation with a single inviting CTA: *"Begin Celebration 🎂 ↗"* leading to the cake room.
 
-2. **🎂 The Cake Ceremony (`cake.html`)**:
+3. **🎂 The Cake Ceremony (`cake.html`)**:
    - 3D interactive multi-tier cake with lit candles.
    - Blow out the candles with smoke animation.
    - Slice the cake with knife animation to reveal *"Served with Love across the miles to My Lady ♡"*.
    - Built-in music-box melody player for *"Happy Birthday My Lady"*.
 
-3. **👑 Why My Lady Is Unmatched (`reasons.html`)**:
+4. **👑 Why My Lady Is Unmatched (`reasons.html`)**:
    - 6 editorial tribute cards honoring My Lady's grace, unbreakable long-distance bond, humor, secret-keeping, dreams, and golden heart.
 
-4. **📷 Our Moments & Memories (`gallery.html`)**:
+5. **📷 Our Moments & Memories (`gallery.html`)**:
    - Polaroid-style photo frames with washi-tape decorations.
    - **Upload Real Photos**: Instant image uploader that saves real pictures with My Lady into `localStorage` so they stay permanently saved across pages!
    - Lightbox dialog for full-size viewing.
 
-5. **💌 A Little Note for My Lady (`letter.html`)**:
+6. **💌 A Little Note for My Lady (`letter.html`)**:
    - Dedicated editorial letter card matching the editorial magazine aesthetic.
    - Heartfelt, emotional letter from her best friend highlighting that miles cannot touch their bond.
 
-6. **🎁 Bestie Surprise Box (`gifts.html`)**:
+7. **🎁 Bestie Surprise Box (`gifts.html`)**:
    - 3D styled gift box with dusty rose ribbons.
    - Tap to unbox 4 exclusive Bestie VIP passes (Reunion Chai & Dessert Date, 24/7 Long-Distance Hotline, Virtual Shopping Spree, and One Big Birthday Wish).
    - Grand celebration finale banner with celebratory confetti explosions.

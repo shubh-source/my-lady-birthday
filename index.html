@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday, My Lady ✳</title>
+  <title>Welcome, My Lady ✳ | A Birthday Invitation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -11,108 +11,78 @@
 </head>
 <body class="page-body">
 
-  <!-- Confetti Canvas -->
   <canvas id="confettiCanvas"></canvas>
 
-  <div class="page-shell">
-    <!-- Header -->
-    <header class="site-header">
-      <div class="header-inner">
-        <a href="index.html" class="wordmark">
-          <span class="display">for my favorite person</span>
-          <span class="ornament-inline">✳</span>
-        </a>
-        
-        <nav class="nav-menu">
-          <a href="index.html" class="active">Home</a>
-          <a href="cake.html">Cake</a>
-          <a href="reasons.html">Qualities</a>
-          <a href="gallery.html">Memories</a>
-          <a href="letter.html">Letter</a>
-          <a href="gifts.html">Gifts</a>
-        </nav>
-
-        <div class="header-actions">
-          <button id="musicToggleBtn" class="btn-music" title="Play Birthday Music" aria-label="Toggle Music">
-            <span id="musicIcon">🎵</span>
-            <span class="music-label">Melody</span>
-            <span class="sound-wave" id="soundWave">
-              <span></span><span></span><span></span><span></span>
-            </span>
-          </button>
-          <span class="header-occasion">A birthday just for you ♡</span>
-        </div>
+  <div class="page-shell welcome-shell">
+    <!-- Top Minimal Bar -->
+    <header class="welcome-header">
+      <div class="welcome-header-inner">
+        <span class="display text-sm tracking-tight text-muted">A private invitation for My Lady ✳</span>
+        <button id="musicToggleBtn" class="btn-music" title="Play Birthday Music" aria-label="Toggle Music">
+          <span id="musicIcon">🎵</span>
+          <span class="music-label">Melody</span>
+          <span class="sound-wave" id="soundWave">
+            <span></span><span></span><span></span><span></span>
+          </span>
+        </button>
       </div>
     </header>
 
-    <main>
-      <!-- Hero Section (Long Distance Bestie POV for My Lady) -->
-      <section class="hero-section" aria-labelledby="hero-title">
-        <div class="hero-left">
-          <div class="eyebrow-container">
-            <span class="eyebrow-line" aria-hidden="true"></span>
-            <p class="hero-eyebrow">To My Lady — miles apart, but always in my heart</p>
+    <!-- Main Welcome Card Container -->
+    <main class="welcome-main">
+      <div class="welcome-card-wrapper">
+        <div class="welcome-ornament-corner top-left">⚜️</div>
+        <div class="welcome-ornament-corner bottom-right">⚜️</div>
+
+        <div class="welcome-card">
+          <!-- Royal Wax Seal -->
+          <div class="welcome-seal">
+            <span class="seal-crown">👑</span>
+            <span class="seal-label">FOR MY LADY</span>
           </div>
 
-          <h1 id="hero-title" class="display hero-title">
-            Happy Birthday, <br>
+          <div class="welcome-kicker-wrap">
+            <span class="eyebrow-line"></span>
+            <p class="welcome-kicker">SPECIAL DELIVERY ACROSS THE MILES ✈️</p>
+            <span class="eyebrow-line"></span>
+          </div>
+
+          <h1 class="display welcome-title">
+            Welcome, <br>
             <span class="highlight-title">My Lady.</span>
           </h1>
 
-          <div class="divider-ornament" aria-hidden="true">
+          <div class="divider-ornament">
             <span class="divider-line"></span>
             <span class="ornament">✳</span>
           </div>
 
-          <p class="hero-description">
-            Even though miles separate us today, <strong>My Lady</strong>, no matter how much the distance between us, our bond will remain the same always. You make life softer, brighter, and infinitely more beautiful. Celebrating my soul sister, my safest haven, and the queen of my heart!
+          <p class="welcome-message">
+            A private celebration space created with all my love, designed exclusively for my favorite person and soul sister.
+          </p>
+          
+          <p class="welcome-sub-message">
+            Even though miles separate us today, <strong>no matter how much the distance between us, our bond will remain the same always.</strong> Step inside — your special birthday journey awaits!
           </p>
 
-          <div class="hero-actions">
-            <a href="cake.html" class="btn-primary">
-              Begin Celebration 🎂 ↗
+          <div class="welcome-action-wrap">
+            <a href="home.html" class="btn-primary welcome-enter-btn">
+              Step Inside Your Celebration 🗝️ ↗
             </a>
-          </div>
-
-          <!-- Feature Highlights / Badges -->
-          <div class="hero-stats">
-            <div class="stat-pill">
-              <span class="stat-icon">👑</span>
-              <span class="stat-text">My Lady</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-icon">♡</span>
-              <span class="stat-text">Miles Apart, Connected by Heart</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-icon">✨</span>
-              <span class="stat-text">Unbreakable Bond</span>
-            </div>
+            <span class="welcome-hint">Tap above to unlock your birthday surprises ♡</span>
           </div>
         </div>
 
-        <div class="hero-right">
-          <div class="photo-frame-container">
-            <div class="photo-frame">
-              <img 
-                src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1280" 
-                alt="Soft pink flowers arranged for My Lady's birthday celebration" 
-                class="hero-photo"
-              >
-              <div class="photo-badge">
-                <span>Across the miles to My Lady ♡</span>
-              </div>
-            </div>
-            <span class="floating-star-ornament" aria-hidden="true">✷</span>
-          </div>
-        </div>
-      </section>
+        <!-- Floating Decorative Stars -->
+        <span class="floating-star-welcome star-1" aria-hidden="true">✷</span>
+        <span class="floating-star-welcome star-2" aria-hidden="true">✳</span>
+      </div>
     </main>
 
     <!-- Footer -->
     <footer class="site-footer">
       <div class="footer-inner">
-        <p class="footer-note">Made with all my love across the miles, especially for My Lady ♡ — Your Bestie</p>
+        <p class="footer-note">Crafted with infinite love across the miles, especially for My Lady ♡ — Your Bestie</p>
       </div>
     </footer>
   </div>
