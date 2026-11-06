@@ -721,6 +721,7 @@ body.page-body {
 }
 
 .candle {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -733,14 +734,16 @@ body.page-body {
 }
 
 .flame {
-  width: 13px;
-  height: 20px;
+  width: 14px;
+  height: 22px;
   background: radial-gradient(ellipse at bottom, #fff 0%, #ffdf79 30%, #e06045 80%);
   border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
   box-shadow: 0 0 14px #ffdf79, 0 0 24px #e06045;
   animation: flameFlicker 0.4s infinite alternate ease-in-out;
   transform-origin: bottom center;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes flameFlicker {
@@ -748,10 +751,49 @@ body.page-body {
   100% { transform: scale(1.15) rotate(3deg); opacity: 1; }
 }
 
+/* Extinguished flame state: forcefully stop animation, hide glow and flame */
 .candle.blown-out .flame {
+  animation: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: scale(0) translateY(-6px) !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+/* Smoke effect that drifts upward when blown out */
+.candle .smoke {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(160, 150, 140, 0.7);
   opacity: 0;
-  transform: scale(0.1);
   pointer-events: none;
+  filter: blur(2px);
+  z-index: 5;
+}
+
+.candle.blown-out .smoke {
+  animation: smokeRise 1.5s ease-out forwards;
+}
+
+@keyframes smokeRise {
+  0% {
+    opacity: 0.85;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  40% {
+    opacity: 0.6;
+    transform: translateX(-65%) translateY(-22px) scale(2.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40%) translateY(-50px) scale(3.8);
+  }
 }
 
 .wick {
