@@ -289,7 +289,9 @@ function initCakeCeremony() {
   const resetBtn = document.getElementById('resetCakeBtn');
   const statusBanner = document.getElementById('cakeStatusBanner');
   const knife = document.getElementById('knifeElement');
-  const slice = document.getElementById('cakeSlice');
+  const cakeDisplay = document.getElementById('cakeDisplay');
+  const cakePlate = document.getElementById('cakePlate');
+  const servedSlice = document.getElementById('servedSlice');
 
   if (!candles.length || !blowBtn || !cutBtn) return;
 
@@ -496,15 +498,17 @@ function initCakeCeremony() {
     cutBtn.disabled = true;
 
     knife.classList.add('cutting');
+    royalAudio.playWhoosh();
 
     setTimeout(() => {
       knife.classList.remove('cutting');
-      slice.classList.add('served');
-      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love across the distance! ✨';
+      if (cakeDisplay) cakeDisplay.classList.add('cake-is-cut');
+      if (cakePlate) cakePlate.classList.add('cake-is-cut');
+      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is cut & served with sweetest love across the distance! ✨';
       royalAudio.playChime();
       confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 150);
       confettiEngine.spawnFallingDOMPieces(50);
-    }, 650);
+    }, 750);
   });
 
   // Reset / Relight button
@@ -520,7 +524,8 @@ function initCakeCeremony() {
       micBlowBtn.classList.remove('listening');
     }
     cutBtn.disabled = true;
-    slice.classList.remove('served');
+    if (cakeDisplay) cakeDisplay.classList.remove('cake-is-cut');
+    if (cakePlate) cakePlate.classList.remove('cake-is-cut');
     statusBanner.innerHTML = '🕯️ The candles are glowing softly! Blow them out, My Lady!';
   });
 }
