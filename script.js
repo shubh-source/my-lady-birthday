@@ -1,11 +1,7 @@
 /**
  * Happy Birthday, My Lady - Multi-Page Celebration Script
+ * From: Her Best Friend & Soul Sister
  * Theme: Editorial Linen & Dusty Rose Palette
- * Features:
- * - Canvas & DOM Confetti Engine in warm editorial tones
- * - Web Audio API Synthesizer (Happy Birthday Melody + Sound Effects)
- * - Page-specific initializers (Cake Ceremony, Gift Unboxing, Gallery)
- * - Active Navigation detection
  */
 
 // ==========================================================================
@@ -145,7 +141,7 @@ class RoyalSoundEngine {
 const royalAudio = new RoyalSoundEngine();
 
 // ==========================================================================
-// 2. Confetti Engine (Palette Match)
+// 2. Confetti Engine (Editorial Palette Match)
 // ==========================================================================
 class ConfettiEngine {
   constructor() {
@@ -322,7 +318,7 @@ function initCakeCeremony() {
     setTimeout(() => {
       knife.classList.remove('cutting');
       slice.classList.add('served');
-      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love! ✨';
+      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love from your bestie! ✨';
       royalAudio.playChime();
       confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 150);
       confettiEngine.spawnFallingDOMPieces(50);
@@ -383,37 +379,37 @@ function initGiftBox() {
 }
 
 // ==========================================================================
-// 5. Gallery Initializer
+// 5. Gallery Initializer (Bestie Perspective)
 // ==========================================================================
 const DEFAULT_POLAROIDS = [
   {
     title: 'Royalty in Every Step',
-    caption: '"Candid perfection, as always!"',
-    author: '— To My Lady ✨',
+    caption: '"My stunning bestie looking flawless as always!"',
+    author: '— From Your Bestie ✨',
     emoji: '👑',
     gradient: 'bg-blush-rose',
     isCustom: false
   },
   {
-    title: 'The Bestie Laugh',
-    caption: '"Inside jokes nobody else understands 😂"',
-    author: '— To My Lady ♡',
+    title: 'The Unstoppable Laugh',
+    caption: '"Inside jokes that only the two of us understand 😂"',
+    author: '— Your Soul Sister ♡',
     emoji: '👯‍♀️',
     gradient: 'bg-warm-sand',
     isCustom: false
   },
   {
-    title: 'Sunset & Coffee Dates',
-    caption: '"Chai, conversations, and endless dreams."',
-    author: '— To My Lady 🥂',
+    title: 'Chai & Therapy Dates',
+    caption: '"Hours of deep chats, hot coffee, and endless dreams."',
+    author: '— Forever & Always ☕',
     emoji: '☕',
     gradient: 'bg-soft-terracotta',
     isCustom: false
   },
   {
-    title: 'Birthday Glow',
-    caption: '"Another year of shining bright and staying iconic!"',
-    author: '— For My Lady 🌟',
+    title: 'Birthday Queen Glow',
+    caption: '"Another year of shining bright and being completely iconic!"',
+    author: '— Love you to bits 🌟',
     emoji: '🌸',
     gradient: 'bg-linen-gold',
     isCustom: false
@@ -464,7 +460,7 @@ function initGallery() {
         </div>
         <div class="polaroid-caption">
           <p class="caption-text">"${item.caption}"</p>
-          <span class="caption-author">— Cherished Memory of My Lady ♡</span>
+          <span class="caption-author">— Cherished Memory with My Bestie ♡</span>
         </div>
       `;
       card.addEventListener('click', () => openLightbox(item));
@@ -478,7 +474,7 @@ function initGallery() {
       lightboxBody.innerHTML = `
         <img src="${item.dataUrl}" style="width:100%; border-radius:10px; margin-bottom:1rem;" alt="Memory of My Lady">
         <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.3rem;">${item.caption}</h3>
-        <p style="color:var(--rose); font-size:0.88rem; margin-top:0.3rem;">Dedicated with love to My Lady ♡</p>
+        <p style="color:var(--rose); font-size:0.88rem; margin-top:0.3rem;">Dedicated with love to My Lady by your best friend ♡</p>
       `;
     } else {
       lightboxBody.innerHTML = `
@@ -507,7 +503,7 @@ function initGallery() {
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        const caption = prompt('Add a cute title/caption for this photo of My Lady:') || 'A golden memory with My Lady!';
+        const caption = prompt('Add a cute title/caption for this photo with My Lady:') || 'A golden memory with my bestie!';
         const newPhoto = {
           dataUrl: event.target.result,
           caption: caption,
