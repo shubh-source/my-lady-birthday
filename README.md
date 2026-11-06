@@ -16,8 +16,8 @@ Every section, letter, and card is dedicated to **My Lady** from her best friend
 
 ## 📑 Multi-Page Structure
 
-1. **💌 Welcome Invitation (`index.html`)**:
-   - Royal wax seal invitation card addressed exclusively to **My Lady**.
+1. **💌 Welcome Celebration Cover (`index.html`)**:
+   - Royal wax seal card addressed exclusively to **My Lady**.
    - Touching bestie distance quote: *"No matter how much the distance between us, our bond will remain the same always."*
    - Interactive button: *"Step Inside Your Celebration 🗝️ ↗"* linking to the main editorial cover.
 
