@@ -1,13 +1,11 @@
 /**
- * Happy Birthday, My Lady - Warm Editorial Celebration Script
+ * Happy Birthday, My Lady - Multi-Page Celebration Script
  * Theme: Editorial Linen & Dusty Rose Palette
  * Features:
  * - Canvas & DOM Confetti Engine in warm editorial tones
  * - Web Audio API Synthesizer (Happy Birthday Melody + Sound Effects)
- * - Interactive Birthday Cake (Candle blow with smoke, cake slicing, served slice)
- * - 3D Gift Box Unboxing with 4 VIP passes
- * - Photo Memories Gallery with Custom Photo Upload & LocalStorage
- * - Interactive Wishing Wall with Persistent Sticky Notes
+ * - Page-specific initializers (Cake Ceremony, Gift Unboxing, Gallery, Wishing Wall)
+ * - Active Navigation detection
  */
 
 // ==========================================================================
@@ -30,7 +28,6 @@ class RoyalSoundEngine {
     }
   }
 
-  // Play a single bell / chime note
   playTone(freq, duration, type = 'sine', volume = 0.16) {
     this.init();
     const osc = this.ctx.createOscillator();
@@ -39,7 +36,6 @@ class RoyalSoundEngine {
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
 
-    // Warm music box envelope
     gain.gain.setValueAtTime(0.001, this.ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(volume, this.ctx.currentTime + 0.03);
     gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
@@ -51,7 +47,6 @@ class RoyalSoundEngine {
     osc.stop(this.ctx.currentTime + duration);
   }
 
-  // Celebratory Chime
   playChime() {
     const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
     notes.forEach((freq, idx) => {
@@ -61,7 +56,6 @@ class RoyalSoundEngine {
     });
   }
 
-  // Soft candle blow whoosh
   playWhoosh() {
     this.init();
     const bufferSize = this.ctx.sampleRate * 0.35;
@@ -87,7 +81,6 @@ class RoyalSoundEngine {
     noise.start();
   }
 
-  // Happy Birthday Melody
   playBirthdayMelody(onEndCallback) {
     this.stopMelody();
     this.init();
@@ -152,8 +145,7 @@ class RoyalSoundEngine {
 const royalAudio = new RoyalSoundEngine();
 
 // ==========================================================================
-// 2. Confetti Engine (Editorial Palette Match)
-// Palette: ['#a34e5c', '#e1ae8e', '#d3bd75', '#ebc8bb', '#8c9b7b', '#f4e8db']
+// 2. Confetti Engine (Palette Match)
 // ==========================================================================
 class ConfettiEngine {
   constructor() {
@@ -202,6 +194,7 @@ class ConfettiEngine {
   }
 
   animate() {
+    if (!this.ctx || !this.canvas) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     for (let i = this.particles.length - 1; i >= 0; i--) {
@@ -241,8 +234,7 @@ class ConfettiEngine {
     }
   }
 
-  // DOM Falling Confetti (Matching User's snippet behavior)
-  spawnFallingDOMPieces(count = 55) {
+  spawnFallingDOMPieces(count = 50) {
     for (let i = 0; i < count; i++) {
       const piece = document.createElement('span');
       piece.className = 'confetti-piece';
@@ -263,7 +255,7 @@ class ConfettiEngine {
 const confettiEngine = new ConfettiEngine();
 
 // ==========================================================================
-// 3. Interactive Cake Ceremony Controller
+// 3. Cake Ceremony Initializer
 // ==========================================================================
 function initCakeCeremony() {
   const candles = document.querySelectorAll('.candle');
@@ -275,10 +267,11 @@ function initCakeCeremony() {
   const slice = document.getElementById('cakeSlice');
   const playMelodyBtn = document.getElementById('playMelodyBtn');
 
+  if (!candles.length || !blowBtn || !cutBtn) return;
+
   let candlesBlown = false;
   let cakeCut = false;
 
-  // Individual Candle Click
   candles.forEach(candle => {
     candle.addEventListener('click', () => {
       if (!candle.classList.contains('blown-out')) {
@@ -307,7 +300,6 @@ function initCakeCeremony() {
     }
   }
 
-  // Blow All Button
   blowBtn.addEventListener('click', () => {
     candles.forEach(candle => candle.classList.add('blown-out'));
     royalAudio.playWhoosh();
@@ -320,7 +312,6 @@ function initCakeCeremony() {
     confettiEngine.spawnFallingDOMPieces(45);
   });
 
-  // Cut Cake Button
   cutBtn.addEventListener('click', () => {
     if (!candlesBlown || cakeCut) return;
     cakeCut = true;
@@ -338,7 +329,6 @@ function initCakeCeremony() {
     }, 650);
   });
 
-  // Relight / Reset
   resetBtn.addEventListener('click', () => {
     candles.forEach(c => c.classList.remove('blown-out'));
     candlesBlown = false;
@@ -349,23 +339,24 @@ function initCakeCeremony() {
     statusBanner.innerHTML = '🕯️ The candles are glowing softly! Blow them out, My Lady!';
   });
 
-  // Melody button
-  playMelodyBtn.addEventListener('click', () => {
-    if (royalAudio.isPlayingMusic) {
-      royalAudio.stopMelody();
-      playMelodyBtn.textContent = '▶ Play Melody';
-    } else {
-      playMelodyBtn.textContent = '⏸ Pause Melody';
-      royalAudio.playBirthdayMelody(() => {
+  if (playMelodyBtn) {
+    playMelodyBtn.addEventListener('click', () => {
+      if (royalAudio.isPlayingMusic) {
+        royalAudio.stopMelody();
         playMelodyBtn.textContent = '▶ Play Melody';
-      });
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
-    }
-  });
+      } else {
+        playMelodyBtn.textContent = '⏸ Pause Melody';
+        royalAudio.playBirthdayMelody(() => {
+          playMelodyBtn.textContent = '▶ Play Melody';
+        });
+        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
+      }
+    });
+  }
 }
 
 // ==========================================================================
-// 4. Virtual Gift Box Unboxing
+// 4. Virtual Gift Box Initializer
 // ==========================================================================
 function initGiftBox() {
   const giftBoxWrapper = document.getElementById('giftBoxWrapper');
@@ -373,10 +364,12 @@ function initGiftBox() {
   const hint = document.getElementById('giftTapHint');
   const couponsContainer = document.getElementById('couponsContainer');
 
+  if (!giftBoxWrapper || !giftBox || !couponsContainer) return;
+
   giftBoxWrapper.addEventListener('click', () => {
     if (!giftBox.classList.contains('opened')) {
       giftBox.classList.add('opened');
-      hint.textContent = '🎁 The surprise is unboxed for My Lady ♡';
+      if (hint) hint.textContent = '🎁 The surprise is unboxed for My Lady ♡';
       couponsContainer.classList.add('visible');
       royalAudio.playChime();
       confettiEngine.spawnBurst(
@@ -390,7 +383,7 @@ function initGiftBox() {
 }
 
 // ==========================================================================
-// 5. Photo Memories Gallery & Custom Upload with LocalStorage
+// 5. Gallery Initializer
 // ==========================================================================
 const DEFAULT_POLAROIDS = [
   {
@@ -433,6 +426,8 @@ function initGallery() {
   const lightbox = document.getElementById('lightboxDialog');
   const lightboxBody = document.getElementById('lightboxBody');
   const lightboxClose = document.getElementById('lightboxCloseBtn');
+
+  if (!grid) return;
 
   const savedPhotos = JSON.parse(localStorage.getItem('my_lady_photos') || '[]');
 
@@ -478,6 +473,7 @@ function initGallery() {
   }
 
   function openLightbox(item) {
+    if (!lightbox || !lightboxBody) return;
     if (item.dataUrl) {
       lightboxBody.innerHTML = `
         <img src="${item.dataUrl}" style="width:100%; border-radius:10px; margin-bottom:1rem;" alt="Memory of My Lady">
@@ -497,40 +493,44 @@ function initGallery() {
     lightbox.showModal();
   }
 
-  lightboxClose.addEventListener('click', () => lightbox.close());
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) lightbox.close();
-  });
+  if (lightboxClose && lightbox) {
+    lightboxClose.addEventListener('click', () => lightbox.close());
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.close();
+    });
+  }
 
-  uploadInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  if (uploadInput) {
+    uploadInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const caption = prompt('Add a cute title/caption for this photo of My Lady:') || 'A golden memory with My Lady!';
-      const newPhoto = {
-        dataUrl: event.target.result,
-        caption: caption,
-        timestamp: new Date().toISOString()
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const caption = prompt('Add a cute title/caption for this photo of My Lady:') || 'A golden memory with My Lady!';
+        const newPhoto = {
+          dataUrl: event.target.result,
+          caption: caption,
+          timestamp: new Date().toISOString()
+        };
+        savedPhotos.unshift(newPhoto);
+        try {
+          localStorage.setItem('my_lady_photos', JSON.stringify(savedPhotos));
+        } catch (err) {
+          console.warn('Storage limit reached', err);
+        }
+        renderGallery();
+        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 70);
       };
-      savedPhotos.unshift(newPhoto);
-      try {
-        localStorage.setItem('my_lady_photos', JSON.stringify(savedPhotos));
-      } catch (err) {
-        console.warn('Storage limit reached', err);
-      }
-      renderGallery();
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 70);
-    };
-    reader.readAsDataURL(file);
-  });
+      reader.readAsDataURL(file);
+    });
+  }
 
   renderGallery();
 }
 
 // ==========================================================================
-// 6. Wishing Wall with Persistent LocalStorage
+// 6. Wishing Wall Initializer
 // ==========================================================================
 const DEFAULT_WISHES = [
   {
@@ -570,6 +570,8 @@ function initWishingWall() {
   const emojiSelect = document.getElementById('emojiSelect');
   const messageInput = document.getElementById('messageInput');
 
+  if (!board) return;
+
   const colorClasses = ['note-paper-1', 'note-paper-2', 'note-paper-3', 'note-paper-4', 'note-paper-5'];
   let customWishes = JSON.parse(localStorage.getItem('my_lady_wishes') || '[]');
 
@@ -602,33 +604,35 @@ function initWishingWall() {
       .replace(/'/g, '&#039;');
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const author = authorInput.value.trim();
-    const emoji = emojiSelect.value;
-    const message = messageInput.value.trim();
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const author = authorInput.value.trim();
+      const emoji = emojiSelect.value;
+      const message = messageInput.value.trim();
 
-    if (!author || !message) return;
+      if (!author || !message) return;
 
-    const randomColor = colorClasses[Math.floor(Math.random() * colorClasses.length)];
-    const newWish = {
-      author: author,
-      emoji: emoji,
-      message: message,
-      color: randomColor,
-      date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-    };
+      const randomColor = colorClasses[Math.floor(Math.random() * colorClasses.length)];
+      const newWish = {
+        author: author,
+        emoji: emoji,
+        message: message,
+        color: randomColor,
+        date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+      };
 
-    customWishes.unshift(newWish);
-    localStorage.setItem('my_lady_wishes', JSON.stringify(customWishes));
+      customWishes.unshift(newWish);
+      localStorage.setItem('my_lady_wishes', JSON.stringify(customWishes));
 
-    renderWishes();
-    form.reset();
+      renderWishes();
+      form.reset();
 
-    royalAudio.playChime();
-    confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight * 0.7, 80);
-    confettiEngine.spawnFallingDOMPieces(30);
-  });
+      royalAudio.playChime();
+      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight * 0.7, 80);
+      confettiEngine.spawnFallingDOMPieces(30);
+    });
+  }
 
   renderWishes();
 }
@@ -641,18 +645,20 @@ function initNavbarAndGlobals() {
   const soundWave = document.getElementById('soundWave');
   const celebrateBtn = document.getElementById('celebrate-button');
 
-  musicToggleBtn.addEventListener('click', () => {
-    if (royalAudio.isPlayingMusic) {
-      royalAudio.stopMelody();
-      soundWave.classList.remove('playing');
-    } else {
-      royalAudio.playBirthdayMelody(() => {
+  if (musicToggleBtn && soundWave) {
+    musicToggleBtn.addEventListener('click', () => {
+      if (royalAudio.isPlayingMusic) {
+        royalAudio.stopMelody();
         soundWave.classList.remove('playing');
-      });
-      soundWave.classList.add('playing');
-      confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
-    }
-  });
+      } else {
+        royalAudio.playBirthdayMelody(() => {
+          soundWave.classList.remove('playing');
+        });
+        soundWave.classList.add('playing');
+        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 60);
+      }
+    });
+  }
 
   if (celebrateBtn) {
     celebrateBtn.addEventListener('click', () => {
@@ -661,13 +667,6 @@ function initNavbarAndGlobals() {
       royalAudio.playChime();
     });
   }
-
-  // Initial gentle welcome burst
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      confettiEngine.spawnFallingDOMPieces(30);
-    }, 400);
-  });
 }
 
 // ==========================================================================

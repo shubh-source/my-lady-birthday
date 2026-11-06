@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moments & Memories 📷 | For My Lady</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-body">
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="page-shell">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="index.html" class="wordmark">
+          <span class="display">for my favorite person</span>
+          <span class="ornament-inline">✳</span>
+        </a>
+        
+        <nav class="nav-menu">
+          <a href="index.html">Home</a>
+          <a href="cake.html">Cake</a>
+          <a href="reasons.html">Qualities</a>
+          <a href="gallery.html" class="active">Memories</a>
+          <a href="letter.html">Letter</a>
+          <a href="gifts.html">Gifts</a>
+          <a href="wishes.html">Wishes</a>
+        </nav>
+
+        <div class="header-actions">
+          <button id="musicToggleBtn" class="btn-music" title="Play Birthday Music" aria-label="Toggle Music">
+            <span id="musicIcon">🎵</span>
+            <span class="music-label">Melody</span>
+            <span class="sound-wave" id="soundWave">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          </button>
+          <span class="header-occasion">A birthday just for you ♡</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Page Hero -->
+      <section class="page-hero">
+        <div class="section-container">
+          <span class="section-kicker">CHERISHED MEMORIES</span>
+          <h1 class="display section-title">Moments & Memories of My Lady</h1>
+          <div class="divider-ornament">
+            <span class="divider-line"></span>
+            <span class="ornament">✳</span>
+          </div>
+          <p class="section-subtitle">
+            Glimpses of beauty, laughter, and timeless memories. You can also upload your own favorite photos of My Lady directly below!
+          </p>
+        </div>
+      </section>
+
+      <!-- Gallery Content -->
+      <section class="section-content">
+        <div class="section-container">
+          <!-- Upload Real Photo Box -->
+          <div class="gallery-upload-box">
+            <label for="photoUploadInput" class="btn-outline-upload">
+              📷 Add a Real Photo of My Lady
+            </label>
+            <input type="file" id="photoUploadInput" accept="image/*" style="display:none;">
+            <p class="upload-note">Add your favourite snapshots — they will be saved right here in your browser!</p>
+          </div>
+
+          <!-- Polaroid Grid -->
+          <div class="polaroid-grid" id="polaroidGrid">
+            <!-- Rendered by JavaScript -->
+          </div>
+
+          <!-- Chapter Navigation Bar -->
+          <div class="chapter-nav">
+            <a href="reasons.html" class="btn-chapter-prev">
+              ← Why She's Unmatched
+            </a>
+            <a href="letter.html" class="btn-chapter-next">
+              Next: A Little Note From Us →
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-note">Made with love, especially for My Lady ♡</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <dialog class="lightbox-dialog" id="lightboxDialog">
+    <div class="dialog-content">
+      <button class="dialog-close" id="lightboxCloseBtn" aria-label="Close photo preview">✕</button>
+      <div class="dialog-body" id="lightboxBody"></div>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>

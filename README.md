@@ -1,74 +1,66 @@
 # ✳ Happy Birthday, My Lady ♡
 
-A warm, editorial, and elegant birthday celebration web application crafted specially for **My Lady** (the ultimate best friend).
+A multi-page, warm editorial celebration web application created specially for **My Lady** (the ultimate best friend).
 
 Designed in an aesthetic editorial palette of **warm linen, creamy paper, and vintage dusty rose** (`#a34e5c`).
 
 ---
 
-## 🌸 Visual Theme & Styling Highlights
+## 📑 Multi-Page Structure
 
-- **Aesthetic Color Palette**:
+This website is organized into separate, beautifully interconnected rooms / pages:
+
+1. **🏠 Home / Overview (`index.html`)**:
+   - Editorial Hero with arched portrait frame and floating `✷` star.
+   - Quick Portal Cards to each celebration room.
+   - "Begin Celebration 🎂 ↗" button.
+
+2. **🎂 The Cake Ceremony (`cake.html`)**:
+   - 3D interactive multi-tier cake with lit candles.
+   - Blow out the candles with realistic smoke animation and celebratory cheer.
+   - Slice the cake with knife animation to reveal *"Served with Love for My Lady ♡"*.
+   - Relight and replay anytime.
+   - Built-in music-box melody player for *"Happy Birthday My Lady"*.
+
+3. **👑 Why She's Unmatched (`reasons.html`)**:
+   - 6 editorial tribute cards honoring My Lady's grace, loyalty, humor, secret-keeping, dreams, and golden heart.
+
+4. **📷 Moments & Memories (`gallery.html`)**:
+   - Polaroid-style photo frames with washi-tape decorations.
+   - **Upload Real Photos**: Instant image uploader that saves real pictures of My Lady into `localStorage` so they stay permanently saved across pages!
+   - Lightbox dialog for full-size viewing.
+
+5. **💌 A Little Note (`letter.html`)**:
+   - Dedicated editorial letter card matching the editorial magazine aesthetic.
+   - Heartfelt tribute to My Lady and her precious friendship with the girlfriend.
+
+6. **🎁 Surprise Gift Box (`gifts.html`)**:
+   - 3D styled gift box with dusty rose ribbons.
+   - Tap to unbox 4 exclusive Bestie VIP passes (Chai & Dessert, 24/7 Venting Hotline, Shopping Spree Partner, and One Big Birthday Wish).
+
+7. **📌 The Wishing Wall (`wishes.html`)**:
+   - Interactive pastel sticky notes board.
+   - Form to add new messages with custom emojis — saved permanently in `localStorage`!
+   - Grand celebration finale banner with celebratory confetti explosions.
+
+---
+
+## 🎨 Theme & Typography
+
+- **Colors**:
   - Warm Linen Canvas: `#fbf6ef`
-  - Subtle Terracotta/Peach Gradients: `#f7e4dc` & `#f4e8db`
+  - Subtle Terracotta/Peach: `#f7e4dc` & `#f4e8db`
   - Deep Espresso Ink: `#342822`
   - Vintage Dusty Rose: `#a34e5c`
-  - Cream Paper Cards: `#fffdf9` with delicate `#eadbd2` borders
-- **Architectural & Editorial Typography**:
-  - Display Serif: `Playfair Display`
-  - Body Sans: `DM Sans`
-  - Handwritten Accents: `Great Vibes`
-  - Ornaments: `✳`, `✷`, `♡`
-- **Arched Photo Frame**:
-  - Elegant arched border with floating offset outline and aesthetic floral portrait.
+  - Cream Paper Cards: `#fffdf9` with `#eadbd2` borders
+- **Fonts**:
+  - `Playfair Display` (editorial serif)
+  - `DM Sans` (modern clean sans)
+  - `Great Vibes` (handwriting touch)
 
 ---
 
-## 🌟 Interactive Features Included
+## 🔗 Links
 
-1. **🌿 Editorial Hero Section**:
-   - Eyebrow: `— To the one and only`
-   - Title: `Happy Birthday, My Lady.`
-   - Arched aesthetic portrait with floating star ornament `✷`.
-   - Direct shortcuts to cut the cake or read the letter.
-
-2. **🎂 Warm Editorial Birthday Cake Ceremony**:
-   - Pastel cream and blush layered birthday cake with lit candles.
-   - **💨 Blow Candles**: Click individual candles or the "Blow the Candles" button to blow them out (with realistic smoke effect + chime).
-   - **🔪 Cut the Cake**: Smooth knife slice animation with cake slice popping up: *"Served with Love for My Lady ♡"*.
-   - **🔄 Relight**: Replay the ceremony anytime.
-
-3. **🎶 Built-in Music Box Synthesizer (100% Offline)**:
-   - Web Audio API bell chime melody playing *"Happy Birthday My Lady"*.
-   - Zero external audio files required!
-
-4. **💎 6 Reasons My Lady Is Unmatched**:
-   - Editorial cards celebrating her grace, loyalty, humor, secret-keeping, dreams, and golden heart.
-
-5. **📷 Memories Polaroid Gallery (+ Live Photo Upload)**:
-   - Polaroid-style frames with washi-tape decorations.
-   - **Upload Real Photos**: Upload real photos of My Lady directly from your device — they are saved into `localStorage` and stay saved permanently!
-   - Lightbox modal for full-size viewing.
-
-6. **💌 The Editorial Birthday Letter**:
-   - Warm cream card with editorial kicker: *"A LITTLE NOTE FROM ME TO YOU"*.
-   - Heartfelt, touching letter acknowledging her friendship with the girlfriend and wishing her a glowing year ahead.
-
-7. **🎁 3D Virtual Gift Box Unboxing**:
-   - Tap the present to untie the ribbon and pop the lid.
-   - Reveals 4 exclusive Bestie VIP Passes (Chai & Dessert, 24/7 Venting Hotline, Shopping Spree Partner, and One Big Birthday Wish).
-
-8. **📌 Cozy Wishing Wall (Sticky Notes)**:
-   - Digital guestbook with warm paper notes.
-   - Write notes with custom emojis — saved permanently in `localStorage`!
-
-9. **✨ Falling Confetti & Stars**:
-   - Confetti in dusty rose, peach, champagne, and soft linen tones.
-   - Triggerable at any time via the *"Make a birthday wish ✨"* button.
-
----
-
-## 🚀 Live Demo & Links
-
-- **GitHub Repository**: [https://github.com/shubh-source/my-lady-birthday](https://github.com/shubh-source/my-lady-birthday)
 - **Live Website**: [https://shubh-source.github.io/my-lady-birthday/](https://shubh-source.github.io/my-lady-birthday/)
+- **GitHub Repository**: [https://github.com/shubh-source/my-lady-birthday](https://github.com/shubh-source/my-lady-birthday)

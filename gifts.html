@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surprise Gift Box 🎁 | For My Lady</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-body">
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="page-shell">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="index.html" class="wordmark">
+          <span class="display">for my favorite person</span>
+          <span class="ornament-inline">✳</span>
+        </a>
+        
+        <nav class="nav-menu">
+          <a href="index.html">Home</a>
+          <a href="cake.html">Cake</a>
+          <a href="reasons.html">Qualities</a>
+          <a href="gallery.html">Memories</a>
+          <a href="letter.html">Letter</a>
+          <a href="gifts.html" class="active">Gifts</a>
+          <a href="wishes.html">Wishes</a>
+        </nav>
+
+        <div class="header-actions">
+          <button id="musicToggleBtn" class="btn-music" title="Play Birthday Music" aria-label="Toggle Music">
+            <span id="musicIcon">🎵</span>
+            <span class="music-label">Melody</span>
+            <span class="sound-wave" id="soundWave">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          </button>
+          <span class="header-occasion">A birthday just for you ♡</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Page Hero -->
+      <section class="page-hero">
+        <div class="section-container">
+          <span class="section-kicker">A SPECIAL SURPRISE</span>
+          <h1 class="display section-title">A Gift Box for My Lady</h1>
+          <div class="divider-ornament">
+            <span class="divider-line"></span>
+            <span class="ornament">✳</span>
+          </div>
+          <p class="section-subtitle">
+            Tap the gift box below to unwrap four exclusive bestie VIP passes tailored specially for My Lady!
+          </p>
+        </div>
+      </section>
+
+      <!-- Gift Showcase Content -->
+      <section class="section-content">
+        <div class="section-container">
+          <div class="gift-box-area">
+            <!-- 3D Styled Gift Box -->
+            <div class="gift-box-wrapper" id="giftBoxWrapper" role="button" tabindex="0" aria-label="Open gift box">
+              <div class="gift-box" id="giftBox">
+                <div class="box-lid" id="boxLid">
+                  <div class="ribbon-bow">🎀</div>
+                  <div class="ribbon-v"></div>
+                </div>
+                <div class="box-body">
+                  <div class="ribbon-v"></div>
+                  <div class="ribbon-h"></div>
+                  <span class="gift-tag">For My Lady ♡</span>
+                </div>
+              </div>
+              <p class="tap-hint" id="giftTapHint">Tap the box to open My Lady's surprise ↗</p>
+            </div>
+
+            <!-- Revealed Coupons Grid -->
+            <div class="coupons-container" id="couponsContainer">
+              <div class="coupons-header">
+                <span class="ornament text-2xl">✳</span>
+                <h2 class="display coupons-heading">Surprise Unlocked: VIP Passes for My Lady</h2>
+              </div>
+
+              <div class="coupons-grid">
+                <!-- Pass 1 -->
+                <div class="coupon-card">
+                  <span class="coupon-tag">PASS #1</span>
+                  <div class="coupon-icon">☕🍰</div>
+                  <h3 class="display coupon-title">Chai & Dessert On Demand</h3>
+                  <p class="coupon-desc">Valid anytime My Lady craves sweet treats, hot coffee, or dessert therapy. No questions asked!</p>
+                  <span class="coupon-status">Redeemable: Unlimited ♡</span>
+                </div>
+
+                <!-- Pass 2 -->
+                <div class="coupon-card">
+                  <span class="coupon-tag">PASS #2</span>
+                  <div class="coupon-icon">📞✨</div>
+                  <h3 class="display coupon-title">24/7 Midnight Venting Line</h3>
+                  <p class="coupon-desc">Direct hotline to complain about work, life, or silly drama. 100% agreement and loyalty guaranteed!</p>
+                  <span class="coupon-status">Redeemable: Lifetime ♡</span>
+                </div>
+
+                <!-- Pass 3 -->
+                <div class="coupon-card">
+                  <span class="coupon-tag">PASS #3</span>
+                  <div class="coupon-icon">🛍️💄</div>
+                  <h3 class="display coupon-title">Guilt-Free Shopping Partner</h3>
+                  <p class="coupon-desc">A companion who will encourage My Lady to treat herself because "she honestly deserves the best!"</p>
+                  <span class="coupon-status">Redeemable: Always Active ♡</span>
+                </div>
+
+                <!-- Pass 4 -->
+                <div class="coupon-card">
+                  <span class="coupon-tag">PASS #4</span>
+                  <div class="coupon-icon">🌟👑</div>
+                  <h3 class="display coupon-title">One Big Birthday Wish</h3>
+                  <p class="coupon-desc">One special wish to be granted by your loved ones and the universe. Dream as big as you want, My Lady!</p>
+                  <span class="coupon-status">Redeemable: Today & Forever ♡</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chapter Navigation Bar -->
+          <div class="chapter-nav">
+            <a href="letter.html" class="btn-chapter-prev">
+              ← A Little Note
+            </a>
+            <a href="wishes.html" class="btn-chapter-next">
+              Next: The Wishing Wall →
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-note">Made with love, especially for My Lady ♡</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
