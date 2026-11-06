@@ -9,160 +9,221 @@
 // ==========================================================================
 class RoyalSoundEngine {
   constructor() {
-    this.ctx = null;
+    this.audio = new Audio();
+    this.audio.loop = true;
+    this.audio.preload = 'auto';
+    this.audio.volume = 0.85;
     this.isPlayingMusic = false;
-    this.melodyTimeouts = [];
+
+    // Track Catalog
+    this.tracks = {
+      musicBox: {
+        id: 'musicBox',
+        name: 'Music Box (Waltz)',
+        icon: '🎵',
+        desc: 'Vintage Swiss music box with sparkling crystal tines & waltz',
+        src: 'public/birthday_melody.mp3'
+      },
+      acousticPiano: {
+        id: 'acousticPiano',
+        name: 'Acoustic Piano & Strings',
+        icon: '🎹',
+        desc: 'Emotional, soulful acoustic piano with orchestral strings',
+        src: 'public/birthday_acoustic.mp3'
+      },
+      custom: {
+        id: 'custom',
+        name: 'Custom Song',
+        icon: '✨',
+        desc: 'Your uploaded song playing across the celebration',
+        src: null
+      }
+    };
+
+    // Current Track ID from SessionStorage or default
+    this.currentTrackId = sessionStorage.getItem('melodyTrackId') || 'musicBox';
+
+    // Check if custom audio was previously saved in localStorage
+    try {
+      const savedCustom = localStorage.getItem('customMelodyDataUrl');
+      const savedName = localStorage.getItem('customMelodyName');
+      if (savedCustom) {
+        this.tracks.custom.src = savedCustom;
+        if (savedName) this.tracks.custom.name = savedName;
+      }
+    } catch (e) {}
+
+    this.applyTrackSource();
+
+    // Preserve continuous playback position across page transitions
+    const savedTime = parseFloat(sessionStorage.getItem('melodyTime') || '0');
+    if (savedTime && !isNaN(savedTime)) {
+      this.audio.currentTime = savedTime;
+    }
+
+    // Save currentTime before unloading page
+    window.addEventListener('beforeunload', () => {
+      if (this.isPlayingMusic && this.audio.currentTime) {
+        sessionStorage.setItem('melodyTime', this.audio.currentTime.toString());
+      }
+    });
+
+    // Web Audio Context for SFX (chimes, whoosh)
+    this.ctx = null;
   }
 
-  init() {
+  initWebAudio() {
     if (!this.ctx) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      this.ctx = new AudioContext();
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) this.ctx = new AudioCtx();
     }
-    if (this.ctx.state === 'suspended') {
+    if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
   }
 
-  playTone(freq, duration, type = 'sine', volume = 0.16) {
-    this.init();
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-
-    gain.gain.setValueAtTime(0.001, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(volume, this.ctx.currentTime + 0.03);
-    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
-
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-
-    osc.start();
-    osc.stop(this.ctx.currentTime + duration);
-  }
-
-  playChime() {
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-    notes.forEach((freq, idx) => {
-      setTimeout(() => {
-        this.playTone(freq, 0.6, 'triangle', 0.18);
-      }, idx * 110);
-    });
-  }
-
-  playWhoosh() {
-    this.init();
-    const bufferSize = this.ctx.sampleRate * 0.35;
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
-    }
-    const noise = this.ctx.createBufferSource();
-    noise.buffer = buffer;
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(700, this.ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.35);
-
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(this.ctx.destination);
-    noise.start();
-  }
-
-  playBirthdayMelody(loop = true, onEndCallback) {
-    this.stopMelody();
-    this.init();
-    this.isPlayingMusic = true;
-    sessionStorage.setItem('melodyActive', 'true');
-    this.updateSoundWaveUI(true);
-
-    const C4 = 261.63, D4 = 293.66, E4 = 329.63, F4 = 349.23,
-          G4 = 392.00, A4 = 440.00, Bb4 = 466.16,
-          C5 = 523.25, D5 = 587.33, E5 = 659.25, F5 = 698.46;
-
-    const song = [
-      { note: C4, duration: 0.35, delay: 0 },
-      { note: C4, duration: 0.25, delay: 400 },
-      { note: D4, duration: 0.6, delay: 700 },
-      { note: C4, duration: 0.6, delay: 1400 },
-      { note: F4, duration: 0.6, delay: 2100 },
-      { note: E4, duration: 1.0, delay: 2800 },
-
-      { note: C4, duration: 0.35, delay: 4000 },
-      { note: C4, duration: 0.25, delay: 4400 },
-      { note: D4, duration: 0.6, delay: 4700 },
-      { note: C4, duration: 0.6, delay: 5400 },
-      { note: G4, duration: 0.6, delay: 6100 },
-      { note: F4, duration: 1.0, delay: 6800 },
-
-      { note: C4, duration: 0.35, delay: 8000 },
-      { note: C4, duration: 0.25, delay: 8400 },
-      { note: C5, duration: 0.7, delay: 8700 },
-      { note: A4, duration: 0.7, delay: 9500 },
-      { note: F4, duration: 0.6, delay: 10300 },
-      { note: E4, duration: 0.6, delay: 11000 },
-      { note: D4, duration: 1.0, delay: 11700 },
-
-      { note: Bb4, duration: 0.35, delay: 13000 },
-      { note: Bb4, duration: 0.25, delay: 13400 },
-      { note: A4, duration: 0.7, delay: 13700 },
-      { note: F4, duration: 0.7, delay: 14500 },
-      { note: G4, duration: 0.7, delay: 15300 },
-      { note: F4, duration: 1.5, delay: 16100 }
-    ];
-
-    song.forEach(item => {
-      const tid = setTimeout(() => {
-        if (!this.isPlayingMusic) return;
-        this.playTone(item.note, item.duration, 'triangle', 0.18);
-      }, item.delay);
-      this.melodyTimeouts.push(tid);
-    });
-
-    const endTid = setTimeout(() => {
-      if (!this.isPlayingMusic) return;
-      if (loop) {
-        // Subtle pause before seamless replay
-        const loopTid = setTimeout(() => {
-          if (this.isPlayingMusic) {
-            this.playBirthdayMelody(true, onEndCallback);
-          }
-        }, 1500);
-        this.melodyTimeouts.push(loopTid);
-      } else {
-        this.isPlayingMusic = false;
-        this.updateSoundWaveUI(false);
-        if (onEndCallback) onEndCallback();
+  applyTrackSource() {
+    const track = this.tracks[this.currentTrackId] || this.tracks.musicBox;
+    if (track.src && !this.audio.src.endsWith(track.src)) {
+      const wasPlaying = this.isPlayingMusic;
+      this.audio.src = track.src;
+      this.audio.load();
+      if (wasPlaying) {
+        this.audio.play().catch(() => {});
       }
-    }, 18000);
-    this.melodyTimeouts.push(endTid);
+    }
+  }
+
+  setTrack(trackId) {
+    if (!this.tracks[trackId]) return;
+    this.currentTrackId = trackId;
+    sessionStorage.setItem('melodyTrackId', trackId);
+    this.applyTrackSource();
+    if (this.isPlayingMusic) {
+      this.audio.play().catch(() => {});
+    }
+    this.updateSoundWaveUI(this.isPlayingMusic);
+    this.updateLabelUI();
+    this.updatePopoverActiveUI();
+  }
+
+  setCustomTrack(dataUrl, fileName) {
+    this.tracks.custom.src = dataUrl;
+    this.tracks.custom.name = fileName ? `Custom: ${fileName.slice(0, 18)}` : 'Custom Song';
+    try {
+      localStorage.setItem('customMelodyDataUrl', dataUrl);
+      localStorage.setItem('customMelodyName', this.tracks.custom.name);
+    } catch (e) {}
+    this.setTrack('custom');
+    this.playBirthdayMelody(true);
+  }
+
+  playBirthdayMelody(loop = true) {
+    this.initWebAudio();
+    this.audio.loop = loop;
+    this.applyTrackSource();
+
+    const promise = this.audio.play();
+    if (promise !== undefined) {
+      promise
+        .then(() => {
+          this.isPlayingMusic = true;
+          sessionStorage.setItem('melodyActive', 'true');
+          this.updateSoundWaveUI(true);
+          this.updateLabelUI();
+          this.updatePopoverActiveUI();
+        })
+        .catch(err => {
+          console.warn('Audio playback waiting for user gesture:', err);
+        });
+    }
   }
 
   stopMelody() {
-    this.melodyTimeouts.forEach(clearTimeout);
-    this.melodyTimeouts = [];
+    this.audio.pause();
     this.isPlayingMusic = false;
     sessionStorage.setItem('melodyActive', 'false');
     this.updateSoundWaveUI(false);
+    this.updateLabelUI();
   }
 
   updateSoundWaveUI(active) {
     const soundWave = document.getElementById('soundWave');
     if (soundWave) {
-      if (active) {
-        soundWave.classList.add('playing');
-      } else {
-        soundWave.classList.remove('playing');
-      }
+      if (active) soundWave.classList.add('playing');
+      else soundWave.classList.remove('playing');
     }
+  }
+
+  updateLabelUI() {
+    const musicIcon = document.getElementById('musicIcon');
+    const musicLabel = document.querySelector('.music-label');
+    const track = this.tracks[this.currentTrackId] || this.tracks.musicBox;
+    if (musicIcon) musicIcon.textContent = track.icon;
+    if (musicLabel) musicLabel.textContent = this.isPlayingMusic ? track.name.split(' ')[0] : 'Melody';
+  }
+
+  updatePopoverActiveUI() {
+    document.querySelectorAll('.melody-track-card').forEach(card => {
+      if (card.dataset.track === this.currentTrackId) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+  }
+
+  // Realistic Sparkle Chime (Web Audio for candles, celebrations)
+  playChime() {
+    this.initWebAudio();
+    if (!this.ctx) return;
+    const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+    notes.forEach((freq, idx) => {
+      setTimeout(() => {
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.001, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.18, this.ctx.currentTime + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.65);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.65);
+        } catch (e) {}
+      }, idx * 95);
+    });
+  }
+
+  // Soft whoosh (Web Audio for blow, slice)
+  playWhoosh() {
+    this.initWebAudio();
+    if (!this.ctx) return;
+    try {
+      const bufferSize = this.ctx.sampleRate * 0.35;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(700, this.ctx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.35);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+      noise.start();
+    } catch (e) {}
   }
 }
 
@@ -720,7 +781,30 @@ function initNavbarAndGlobals() {
   const musicToggleBtn = document.getElementById('musicToggleBtn');
   const celebrateBtn = document.getElementById('celebrate-button');
 
+  // Inject track selector button and popover modal if music button is present
   if (musicToggleBtn) {
+    // If not already wrapped in .music-pill-group, wrap it
+    if (!musicToggleBtn.parentElement.classList.contains('music-pill-group')) {
+      const parent = musicToggleBtn.parentElement;
+      const pillGroup = document.createElement('div');
+      pillGroup.className = 'music-pill-group';
+      parent.insertBefore(pillGroup, musicToggleBtn);
+      pillGroup.appendChild(musicToggleBtn);
+
+      const menuBtn = document.createElement('button');
+      menuBtn.id = 'musicMenuBtn';
+      menuBtn.className = 'btn-music-menu';
+      menuBtn.title = 'Choose Melody Track / Upload Song';
+      menuBtn.setAttribute('aria-label', 'Choose Melody Track');
+      menuBtn.innerHTML = '▾';
+      pillGroup.appendChild(menuBtn);
+
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openMelodyPopover();
+      });
+    }
+
     musicToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (royalAudio.isPlayingMusic) {
@@ -730,7 +814,13 @@ function initNavbarAndGlobals() {
         confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 3, 50);
       }
     });
+
+    // Update label to reflect active track
+    royalAudio.updateLabelUI();
   }
+
+  // Ensure Melody Popover exists in DOM
+  createMelodyPopoverDOM();
 
   if (celebrateBtn) {
     celebrateBtn.addEventListener('click', () => {
@@ -742,6 +832,122 @@ function initNavbarAndGlobals() {
 
   // Activate melody on the very first click or tap anywhere on the display
   initGlobalTapMelody();
+}
+
+/**
+ * Creates the modal popover for switching tracks or uploading custom audio
+ */
+function createMelodyPopoverDOM() {
+  if (document.getElementById('melodyPopoverOverlay')) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'melodyPopoverOverlay';
+  overlay.className = 'melody-popover-overlay';
+  overlay.innerHTML = `
+    <div class="melody-popover-card" role="dialog" aria-modal="true" aria-label="Choose Birthday Melody">
+      <div class="melody-popover-header">
+        <h3 class="melody-popover-title">Choose Birthday Melody 🎶</h3>
+        <button class="melody-popover-close" id="closeMelodyPopover" aria-label="Close">✕</button>
+      </div>
+      <div class="melody-track-list">
+        <div class="melody-track-card" data-track="musicBox">
+          <div class="track-icon">🎵</div>
+          <div class="track-info">
+            <div class="track-title">
+              <span>Vintage Swiss Music Box (Waltz)</span>
+              <span class="badge-active">Active</span>
+            </div>
+            <div class="track-desc">Sparkling crystal bell chimes & sweet waltz accompaniment</div>
+          </div>
+        </div>
+
+        <div class="melody-track-card" data-track="acousticPiano">
+          <div class="track-icon">🎹</div>
+          <div class="track-info">
+            <div class="track-title">
+              <span>Dreamy Acoustic Piano & Strings</span>
+              <span class="badge-active">Active</span>
+            </div>
+            <div class="track-desc">Soulful, heartfelt acoustic piano with orchestral strings</div>
+          </div>
+        </div>
+
+        <div class="melody-track-card" data-track="custom">
+          <div class="track-icon">✨</div>
+          <div class="track-info">
+            <div class="track-title">
+              <span>Upload Custom Song (MP3)</span>
+              <span class="badge-active">Active</span>
+            </div>
+            <div class="track-desc" id="customTrackDesc">Choose any song of your choice from your phone or PC</div>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="customMelodyFileInput" accept="audio/*" style="display:none;">
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // Close handlers
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeMelodyPopover();
+  });
+  const closeBtn = overlay.querySelector('#closeMelodyPopover');
+  if (closeBtn) closeBtn.addEventListener('click', closeMelodyPopover);
+
+  // Track selection
+  overlay.querySelectorAll('.melody-track-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const trackId = card.dataset.track;
+      if (trackId === 'custom') {
+        const fileInput = document.getElementById('customMelodyFileInput');
+        if (fileInput) fileInput.click();
+      } else {
+        royalAudio.setTrack(trackId);
+        royalAudio.playBirthdayMelody(true);
+        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 40);
+        closeMelodyPopover();
+      }
+    });
+  });
+
+  // Custom audio file chooser handler
+  const customFileInput = document.getElementById('customMelodyFileInput');
+  if (customFileInput) {
+    customFileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        const dataUrl = loadEvt.target.result;
+        royalAudio.setCustomTrack(dataUrl, file.name);
+        const descEl = document.getElementById('customTrackDesc');
+        if (descEl) descEl.textContent = `Playing: ${file.name}`;
+        confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2, 60);
+        closeMelodyPopover();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  royalAudio.updatePopoverActiveUI();
+}
+
+function openMelodyPopover() {
+  const overlay = document.getElementById('melodyPopoverOverlay');
+  if (overlay) {
+    royalAudio.updatePopoverActiveUI();
+    overlay.classList.add('visible');
+  }
+}
+
+function closeMelodyPopover() {
+  const overlay = document.getElementById('melodyPopoverOverlay');
+  if (overlay) {
+    overlay.classList.remove('visible');
+  }
 }
 
 /**
@@ -758,8 +964,8 @@ function initGlobalTapMelody() {
   const triggerMelodyOnFirstTap = (evt) => {
     if (activated) return;
 
-    // If user clicked the music toggle button in the header, let that handler manage it
-    if (evt && evt.target && evt.target.closest('#musicToggleBtn')) {
+    // If user clicked the music toggle or menu button in the header, let that handler manage it
+    if (evt && evt.target && (evt.target.closest('#musicToggleBtn') || evt.target.closest('#musicMenuBtn') || evt.target.closest('#melodyPopoverOverlay'))) {
       return;
     }
 

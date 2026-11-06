@@ -39,14 +39,20 @@ html {
   font-family: var(--font-sans);
   background-color: var(--cream);
   color: var(--ink);
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body.page-body {
   margin: 0;
   color: var(--ink);
   background-color: var(--cream);
+  width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ==========================================================================
@@ -267,6 +273,186 @@ body.page-entering .page-shell {
 .btn-music:hover {
   background: var(--rose);
   color: #fff;
+}
+
+.music-pill-group {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.music-pill-group .btn-music {
+  border-radius: 9999px 0 0 9999px;
+  border-right: none;
+}
+
+.btn-music-menu {
+  background: var(--rose-soft);
+  color: var(--rose);
+  border: 1px solid var(--rose);
+  padding: 0.4rem 0.55rem;
+  border-radius: 0 9999px 9999px 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.btn-music-menu:hover {
+  background: var(--rose);
+  color: #fff;
+}
+
+/* Melody Popover Drawer */
+.melody-popover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(52, 40, 34, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 1rem;
+}
+
+.melody-popover-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.melody-popover-card {
+  background: var(--cream-paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  max-width: 440px;
+  width: 100%;
+  padding: 1.8rem 1.6rem;
+  box-shadow: 0 20px 50px rgba(84, 53, 44, 0.18);
+  transform: translateY(12px) scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.melody-popover-overlay.visible .melody-popover-card {
+  transform: translateY(0) scale(1);
+}
+
+.melody-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.melody-popover-title {
+  font-size: 1.25rem;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+
+.melody-popover-close {
+  background: var(--rose-soft);
+  border: none;
+  color: var(--rose);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.melody-popover-close:hover {
+  background: var(--rose);
+  color: #fff;
+}
+
+.melody-track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.melody-track-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-align: left;
+}
+
+.melody-track-card:hover {
+  border-color: var(--rose);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(163, 78, 92, 0.1);
+}
+
+.melody-track-card.active {
+  background: var(--rose-soft);
+  border-color: var(--rose);
+  box-shadow: 0 4px 12px rgba(163, 78, 92, 0.12);
+}
+
+.track-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.track-info {
+  flex: 1;
+}
+
+.track-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.badge-active {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--rose);
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  display: none;
+}
+
+.melody-track-card.active .badge-active {
+  display: inline-block;
+}
+
+.track-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+  line-height: 1.35;
 }
 
 .sound-wave {
@@ -2011,13 +2197,16 @@ body.page-entering .page-shell {
 }
 
 /* ==========================================================================
-   Responsive Adaptations
+   Responsive Adaptations (Tablet & Mobile First Architecture)
    ========================================================================== */
+
+/* Tablet & Intermediate (< 900px) */
 @media (max-width: 900px) {
   .hero-section {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 3rem;
+    gap: 2.75rem;
+    padding: 3.5rem 1.5rem 4rem;
   }
 
   .eyebrow-container,
@@ -2031,49 +2220,482 @@ body.page-entering .page-shell {
 
   .cake-card {
     grid-template-columns: 1fr;
-    padding: 2rem 1.5rem;
+    padding: 2.25rem 1.5rem;
+    gap: 2.5rem;
   }
 
   .cake-display {
-    height: 320px;
-  }
-
-  .nav-menu {
-    display: none;
+    height: 330px;
   }
 }
 
-@media (max-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr;
+/* Phones & Small Screens (< 768px) */
+@media (max-width: 768px) {
+  /* Prevent Any Horizontal Scroll Across All Elements */
+  *, *::before, *::after {
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
-  .cake-plate {
-    transform: scale(0.88);
+  /* Header & Mobile Sticky Navigation Bar */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .header-inner {
+    flex-wrap: wrap;
+    padding: 0.65rem 1rem 0.5rem;
+    gap: 0.4rem;
+    justify-content: space-between;
+  }
+
+  .wordmark {
+    font-size: 0.94rem;
+  }
+
+  .header-actions {
+    gap: 0.5rem;
+  }
+
+  .header-occasion {
+    display: none; /* Hide lengthy text to make room for music toggle */
+  }
+
+  .btn-music {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  /* Swipeable Pill Menu for Mobile */
+  .nav-menu {
+    display: flex !important;
+    width: 100%;
+    order: 3;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 0.45rem;
+    padding: 0.4rem 0 0.2rem;
+    border-top: 1px solid var(--line);
+    margin-top: 0.25rem;
+  }
+
+  .nav-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-menu a {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.85rem;
+    background: var(--cream-paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted-dark);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .nav-menu a:hover {
+    border-color: var(--rose);
+    color: var(--rose);
+  }
+
+  .nav-menu a.active {
+    background: var(--rose) !important;
+    color: #ffffff !important;
+    border-color: var(--rose) !important;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(163, 78, 92, 0.28);
+  }
+
+  .nav-menu a.active::after {
+    display: none;
+  }
+
+  /* Page Sections & Typography */
+  .page-hero {
+    padding: 2.25rem 1rem 1.75rem;
+  }
+
+  .section-content {
+    padding: 0 1rem 3.5rem;
+  }
+
+  .section-kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+  }
+
+  .section-title {
+    font-size: clamp(1.85rem, 6.8vw, 2.4rem);
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* Hero Section (Cover Page) */
+  .hero-section {
+    padding: 2rem 1rem 3rem;
+    gap: 2.25rem;
+    min-height: auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-title {
+    font-size: clamp(2.1rem, 8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.96rem;
+  }
+
+  .hero-stats {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .stat-pill {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* Photo Frame on Mobile - Clean no overflow */
+  .photo-frame-container {
+    max-width: 290px;
+    margin: 0 auto;
   }
 
   .photo-frame {
-    border-radius: 180px 180px 12px 12px;
+    padding: 10px;
+    border-radius: 160px 160px 10px 10px;
   }
 
   .photo-frame::before {
-    border-radius: 180px 180px 12px 12px;
-    right: -11px;
+    inset: 8px -6px -6px 8px;
+    border-radius: 160px 160px 10px 10px;
+    opacity: 0.6;
   }
 
   .hero-photo {
-    border-radius: 170px 170px 5px 5px;
+    border-radius: 150px 150px 5px 5px;
   }
 
+  .floating-star-ornament {
+    display: none; /* Prevents viewport horizontal widening */
+  }
+
+  /* Cake Ceremony on Mobile */
+  .cake-card {
+    padding: 1.6rem 1rem 1.5rem;
+    border-radius: 16px;
+    gap: 1.75rem;
+  }
+
+  .cake-display {
+    height: 290px;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .cake-plate {
+    transform: scale(0.76);
+    transform-origin: center bottom;
+  }
+
+  .cake-plate.cake-is-cut {
+    transform: scale(0.76) translateX(-28px);
+  }
+
+  .served-slice {
+    bottom: 4px;
+    right: -8px;
+    transform: scale(0.82) translateX(-30px);
+  }
+
+  .cake-display.cake-is-cut .served-slice {
+    transform: scale(0.82) translateX(0);
+  }
+
+  .slice-note-card {
+    padding: 0.35rem 0.75rem;
+  }
+
+  .slice-title {
+    font-size: 0.8rem;
+  }
+
+  .slice-sub {
+    font-size: 0.65rem;
+  }
+
+  .cake-controls {
+    gap: 1.1rem;
+    width: 100%;
+  }
+
+  .status-banner {
+    padding: 0.95rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .blow-meter-wrap {
+    max-width: 100%;
+    padding: 0.4rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .blow-meter-label {
+    font-size: 0.78rem;
+  }
+
+  /* 2x2 Clean Mobile Touch Grid for Cake Buttons */
+  .cake-btn-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    width: 100%;
+  }
+
+  .btn-mic-blow {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 999px;
+  }
+
+  #blowBtn, #cutBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.84rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  #relightBtn {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  /* 24 Reasons Grid (Single Column on Phone) */
+  .qualities-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .quality-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 14px;
+    gap: 0.75rem;
+  }
+
+  .quality-title {
+    font-size: 1.2rem;
+  }
+
+  .quality-text {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  /* Gallery Polaroids & Videos */
+  .polaroid-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .polaroid-card {
+    transform: none !important; /* Zero rotation to avoid viewport edge overflow */
+    max-width: 320px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .polaroid-card:hover {
+    transform: translateY(-4px) !important;
+  }
+
+  .video-section {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+  }
+
+  .video-section-title {
+    font-size: 1.65rem;
+  }
+
+  .video-section-desc {
+    font-size: 0.92rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 330px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .video-wrapper {
+    aspect-ratio: 9/16;
+    max-height: 440px;
+  }
+
+  /* Editorial Letter */
+  .letter-card {
+    padding: 2.25rem 1.25rem 2rem !important;
+    border-radius: 16px;
+  }
+
+  .letter-kicker {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+
+  .letter-headline {
+    font-size: clamp(1.8rem, 6.5vw, 2.3rem);
+  }
+
+  .letter-body {
+    font-size: 1.02rem;
+    line-height: 1.8;
+  }
+
+  .letter-signoff {
+    font-size: 1.2rem;
+  }
+
+  .letter-ps {
+    font-size: 0.92rem;
+    padding: 1rem 1.1rem;
+    border-radius: 10px;
+  }
+
+  /* VIP Passes & Surprise Box */
+  .coupons-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .coupon-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .coupon-title {
+    font-size: 1.12rem;
+  }
+
+  .coupon-desc {
+    font-size: 0.88rem;
+  }
+
+  .wish-form-wrapper {
+    padding: 1.4rem 1.1rem;
+    border-radius: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .wish-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Chapter Navigation (Bottom Prev / Next Buttons) */
   .chapter-nav {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding-top: 1.75rem;
   }
 
   .btn-chapter-prev,
   .btn-chapter-next {
+    width: 100%;
     justify-content: center;
-    margin-left: 0;
+    margin: 0 !important;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.92rem;
+  }
+
+  /* Dialog / Lightbox */
+  .dialog-content {
+    padding: 1.4rem 1.1rem;
+    margin: 1rem;
+  }
+
+  /* Melody Popover Mobile */
+  .melody-popover-card {
+    padding: 1.4rem 1.1rem;
+    border-radius: 16px;
+  }
+  .melody-popover-title {
+    font-size: 1.1rem;
+  }
+  .track-title {
+    font-size: 0.88rem;
+  }
+  .track-desc {
+    font-size: 0.74rem;
+  }
+}
+
+/* Extra Small Phones (< 380px) */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 1.95rem;
+  }
+  .section-title {
+    font-size: 1.7rem;
+  }
+  .cake-plate {
+    transform: scale(0.68);
+  }
+  .cake-plate.cake-is-cut {
+    transform: scale(0.68) translateX(-20px);
+  }
+  .cake-card {
+    padding: 1.25rem 0.75rem;
   }
 }
 
@@ -2313,9 +2935,48 @@ body.page-entering .page-shell {
 }
 
 @media (max-width: 640px) {
+  .welcome-header-inner {
+    padding: 0.8rem 1rem;
+    gap: 0.5rem;
+  }
+  .welcome-header-inner span {
+    font-size: 0.78rem;
+    line-height: 1.25;
+  }
+  .welcome-main {
+    padding: 3rem 1rem 2rem;
+  }
   .welcome-card {
-    padding: 3.5rem 1.5rem 2.5rem;
+    padding: 3.25rem 1.25rem 2.25rem;
     border-radius: 20px;
+  }
+  .welcome-seal {
+    top: -36px;
+    width: 72px;
+    height: 72px;
+  }
+  .seal-crown {
+    font-size: 1.25rem;
+  }
+  .seal-label {
+    font-size: 0.46rem;
+  }
+  .welcome-kicker {
+    font-size: 0.68rem;
+    letter-spacing: 1.8px;
+  }
+  .welcome-title {
+    font-size: clamp(2rem, 7.5vw, 2.6rem);
+  }
+  .welcome-message {
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+  .welcome-sub-message {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0.95rem 1rem;
+    margin-bottom: 1.8rem;
   }
   .welcome-ornament-corner {
     display: none;
@@ -2326,5 +2987,7 @@ body.page-entering .page-shell {
   .welcome-enter-btn {
     width: 100%;
     justify-content: center;
+    font-size: 1rem;
+    padding: 0.95rem 1.5rem;
   }
 }
