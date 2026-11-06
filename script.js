@@ -558,39 +558,56 @@ function initGiftBox() {
 }
 
 // ==========================================================================
-// 5. Gallery Initializer (Long-Distance Bestie Perspective for My Lady)
+// 5. Gallery Initializer (Real Photos & Videos from Public Folder for My Lady)
 // ==========================================================================
 const DEFAULT_POLAROIDS = [
   {
-    title: 'Royalty in Every Step',
-    caption: '"My stunning bestie My Lady looking flawless as always!"',
+    image: 'public/pics/1.jpeg',
+    title: 'Queen of Elegance',
+    caption: 'My stunning bestie looking effortless, radiant, and graceful as always!',
     author: '— Love you across the miles ✨',
-    emoji: '👑',
-    gradient: 'bg-blush-rose',
     isCustom: false
   },
   {
-    title: 'Inside Jokes Across Cities',
-    caption: '"No matter the distance, our inside jokes remain legendary 😂"',
-    author: '— To My Lady, Your Soul Sister ♡',
-    emoji: '👯‍♀️',
-    gradient: 'bg-warm-sand',
+    image: 'public/pics/2.jpeg',
+    title: 'Pure Sunshine & Grace',
+    caption: 'That sweet smile that brightens up every single day across the distance.',
+    author: '— Forever my favorite person ♡',
     isCustom: false
   },
   {
-    title: 'Hours on Video Calls',
-    caption: '"Late-night calls, hot chai, and talking like distance does not exist."',
-    author: '— Forever Connected ☕',
-    emoji: '☕',
-    gradient: 'bg-soft-terracotta',
+    image: 'public/pics/3.jpeg',
+    title: 'Unbreakable Bestie Bond',
+    caption: 'No matter how many miles separate us, our souls are always side by side.',
+    author: '— Soul sisters forever 👯‍♀️',
     isCustom: false
   },
   {
-    title: 'Birthday Queen Glow',
-    caption: '"Another year of shining bright and being iconic, My Lady!"',
-    author: '— Distance means nothing 🌟',
-    emoji: '🌸',
-    gradient: 'bg-linen-gold',
+    image: 'public/pics/4.jpeg',
+    title: 'Precious Moments',
+    caption: 'Every memory with you is wrapped in warmth, laughter, and pure joy.',
+    author: '— Cherishing you always 🌸',
+    isCustom: false
+  },
+  {
+    image: 'public/pics/6.jpeg',
+    title: 'Birthday Royalty',
+    caption: 'Another year of you being iconic, inspiring, and completely irreplaceable.',
+    author: '— Celebrating My Lady 👑',
+    isCustom: false
+  },
+  {
+    image: 'public/pics/7.jpeg',
+    title: 'Heartfelt Sisterhood',
+    caption: 'Sharing every thought, every dream, and knowing our bond never fades.',
+    author: '— Distance means nothing ✨',
+    isCustom: false
+  },
+  {
+    image: 'public/pics/8.jpeg',
+    title: 'Forever My Safe Haven',
+    caption: 'Thank you for being the sweetest, kindest, and most loyal bestie in the world.',
+    author: '— With infinite love, Your Bestie ♡',
     isCustom: false
   }
 ];
@@ -609,26 +626,7 @@ function initGallery() {
   function renderGallery() {
     grid.innerHTML = '';
 
-    DEFAULT_POLAROIDS.forEach((item, index) => {
-      const card = document.createElement('div');
-      card.className = `polaroid-card ${index % 2 === 0 ? 'tilt-left' : 'tilt-right'}`;
-      card.innerHTML = `
-        <div class="tape-strip"></div>
-        <div class="polaroid-img-wrapper">
-          <div class="polaroid-placeholder ${item.gradient}">
-            <span class="placeholder-emoji">${item.emoji}</span>
-            <span class="placeholder-text">${item.title}</span>
-          </div>
-        </div>
-        <div class="polaroid-caption">
-          <p class="caption-text">${item.caption}</p>
-          <span class="caption-author">${item.author}</span>
-        </div>
-      `;
-      card.addEventListener('click', () => openLightbox(item));
-      grid.appendChild(card);
-    });
-
+    // Render User Custom Uploads first
     savedPhotos.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = `polaroid-card ${index % 2 === 0 ? 'tilt-right' : 'tilt-left'}`;
@@ -645,24 +643,35 @@ function initGallery() {
       card.addEventListener('click', () => openLightbox(item));
       grid.appendChild(card);
     });
+
+    // Render Real Photos from Public Folder
+    DEFAULT_POLAROIDS.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = `polaroid-card ${(index + savedPhotos.length) % 2 === 0 ? 'tilt-left' : 'tilt-right'}`;
+      card.innerHTML = `
+        <div class="tape-strip"></div>
+        <div class="polaroid-img-wrapper">
+          <img src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.src='assests/pics/${item.image.split('/').pop()}'">
+        </div>
+        <div class="polaroid-caption">
+          <p class="caption-text">"${item.caption}"</p>
+          <span class="caption-author">${item.author}</span>
+        </div>
+      `;
+      card.addEventListener('click', () => openLightbox(item));
+      grid.appendChild(card);
+    });
   }
 
   function openLightbox(item) {
     if (!lightbox || !lightboxBody) return;
-    if (item.dataUrl) {
+    const imgSrc = item.dataUrl || item.image;
+    if (imgSrc) {
       lightboxBody.innerHTML = `
-        <img src="${item.dataUrl}" style="width:100%; border-radius:10px; margin-bottom:1rem;" alt="Memory with My Lady">
-        <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.3rem;">${item.caption}</h3>
-        <p style="color:var(--rose); font-size:0.88rem; margin-top:0.3rem;">Dedicated with love across the miles to My Lady ♡</p>
-      `;
-    } else {
-      lightboxBody.innerHTML = `
-        <div style="text-align:center; padding:1.5rem 0.5rem;">
-          <div style="font-size:3.5rem; margin-bottom:0.8rem;">${item.emoji}</div>
-          <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.4rem; margin-bottom:0.4rem;">${item.title}</h3>
-          <p style="font-family:var(--font-hand); font-size:1.8rem; color:var(--rose);">${item.caption}</p>
-          <p style="color:var(--muted); font-size:0.85rem; margin-top:0.8rem;">${item.author}</p>
-        </div>
+        <img src="${imgSrc}" style="width:100%; max-height:70vh; object-fit:contain; border-radius:12px; margin-bottom:1.2rem; box-shadow:0 10px 30px rgba(0,0,0,0.15);" alt="${item.title || 'Memory with My Lady'}">
+        <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.35rem; margin-bottom:0.35rem;">${item.title || 'Cherished Memory'}</h3>
+        <p style="font-family:var(--font-hand); font-size:1.6rem; color:var(--rose);">${item.caption}</p>
+        <p style="color:var(--muted); font-size:0.85rem; margin-top:0.4rem;">${item.author || '— To My Lady, with all my love ♡'}</p>
       `;
     }
     lightbox.showModal();
