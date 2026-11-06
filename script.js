@@ -1,6 +1,6 @@
 /**
  * Happy Birthday, My Lady - Multi-Page Celebration Script
- * From: Her Best Friend & Soul Sister
+ * From: Her Best Friend across the miles
  * Theme: Editorial Linen & Dusty Rose Palette
  */
 
@@ -289,7 +289,7 @@ function initCakeCeremony() {
       candlesBlown = true;
       blowBtn.disabled = true;
       cutBtn.disabled = false;
-      statusBanner.innerHTML = '✨ Wonderful wish made! Now, cut the cake for <strong>My Lady</strong>! 🍰';
+      statusBanner.innerHTML = '✨ Wonderful wish made, My Lady! Now, cut the cake across the miles! 🍰';
       royalAudio.playChime();
       confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 90);
       confettiEngine.spawnFallingDOMPieces(35);
@@ -302,7 +302,7 @@ function initCakeCeremony() {
     candlesBlown = true;
     blowBtn.disabled = true;
     cutBtn.disabled = false;
-    statusBanner.innerHTML = '🎉 All candles blown! Now cut the cake for <strong>My Lady</strong>! 🎂';
+    statusBanner.innerHTML = '🎉 All candles blown! Cut the cake for My Lady! 🎂';
     royalAudio.playChime();
     confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 120);
     confettiEngine.spawnFallingDOMPieces(45);
@@ -318,7 +318,7 @@ function initCakeCeremony() {
     setTimeout(() => {
       knife.classList.remove('cutting');
       slice.classList.add('served');
-      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love from your bestie! ✨';
+      statusBanner.innerHTML = '♡ <strong>Happy Birthday, My Lady!</strong> Cake is served with sweetest love across the distance! ✨';
       royalAudio.playChime();
       confettiEngine.spawnBurst(window.innerWidth / 2, window.innerHeight / 2.5, 150);
       confettiEngine.spawnFallingDOMPieces(50);
@@ -379,37 +379,37 @@ function initGiftBox() {
 }
 
 // ==========================================================================
-// 5. Gallery Initializer (Bestie Perspective)
+// 5. Gallery Initializer (Long-Distance Bestie Perspective for My Lady)
 // ==========================================================================
 const DEFAULT_POLAROIDS = [
   {
     title: 'Royalty in Every Step',
-    caption: '"My stunning bestie looking flawless as always!"',
-    author: '— From Your Bestie ✨',
+    caption: '"My stunning bestie My Lady looking flawless as always!"',
+    author: '— Love you across the miles ✨',
     emoji: '👑',
     gradient: 'bg-blush-rose',
     isCustom: false
   },
   {
-    title: 'The Unstoppable Laugh',
-    caption: '"Inside jokes that only the two of us understand 😂"',
-    author: '— Your Soul Sister ♡',
+    title: 'Inside Jokes Across Cities',
+    caption: '"No matter the distance, our inside jokes remain legendary 😂"',
+    author: '— To My Lady, Your Soul Sister ♡',
     emoji: '👯‍♀️',
     gradient: 'bg-warm-sand',
     isCustom: false
   },
   {
-    title: 'Chai & Therapy Dates',
-    caption: '"Hours of deep chats, hot coffee, and endless dreams."',
-    author: '— Forever & Always ☕',
+    title: 'Hours on Video Calls',
+    caption: '"Late-night calls, hot chai, and talking like distance does not exist."',
+    author: '— Forever Connected ☕',
     emoji: '☕',
     gradient: 'bg-soft-terracotta',
     isCustom: false
   },
   {
     title: 'Birthday Queen Glow',
-    caption: '"Another year of shining bright and being completely iconic!"',
-    author: '— Love you to bits 🌟',
+    caption: '"Another year of shining bright and being iconic, My Lady!"',
+    author: '— Distance means nothing 🌟',
     emoji: '🌸',
     gradient: 'bg-linen-gold',
     isCustom: false
@@ -456,11 +456,11 @@ function initGallery() {
       card.innerHTML = `
         <div class="tape-strip"></div>
         <div class="polaroid-img-wrapper">
-          <img src="${item.dataUrl}" alt="Photo of My Lady" loading="lazy">
+          <img src="${item.dataUrl}" alt="Photo with My Lady" loading="lazy">
         </div>
         <div class="polaroid-caption">
           <p class="caption-text">"${item.caption}"</p>
-          <span class="caption-author">— Cherished Memory with My Bestie ♡</span>
+          <span class="caption-author">— Cherished Memory with My Lady ♡</span>
         </div>
       `;
       card.addEventListener('click', () => openLightbox(item));
@@ -472,9 +472,9 @@ function initGallery() {
     if (!lightbox || !lightboxBody) return;
     if (item.dataUrl) {
       lightboxBody.innerHTML = `
-        <img src="${item.dataUrl}" style="width:100%; border-radius:10px; margin-bottom:1rem;" alt="Memory of My Lady">
+        <img src="${item.dataUrl}" style="width:100%; border-radius:10px; margin-bottom:1rem;" alt="Memory with My Lady">
         <h3 style="font-family:var(--font-serif); color:var(--ink); font-size:1.3rem;">${item.caption}</h3>
-        <p style="color:var(--rose); font-size:0.88rem; margin-top:0.3rem;">Dedicated with love to My Lady by your best friend ♡</p>
+        <p style="color:var(--rose); font-size:0.88rem; margin-top:0.3rem;">Dedicated with love across the miles to My Lady ♡</p>
       `;
     } else {
       lightboxBody.innerHTML = `
@@ -503,7 +503,7 @@ function initGallery() {
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        const caption = prompt('Add a cute title/caption for this photo with My Lady:') || 'A golden memory with my bestie!';
+        const caption = prompt('Add a cute title/caption for this photo with My Lady:') || 'A golden memory with My Lady!';
         const newPhoto = {
           dataUrl: event.target.result,
           caption: caption,

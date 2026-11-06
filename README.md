@@ -1,47 +1,48 @@
 # ✳ Happy Birthday, My Lady ♡
 
-A multi-page, warm editorial celebration web application created with love **from her best friend** for **My Lady** (the ultimate soul sister).
+A multi-page, warm editorial celebration web application created with love **from her best friend across the miles** for **My Lady** (the ultimate soul sister).
 
 Designed in an aesthetic editorial palette of **warm linen, creamy paper, and vintage dusty rose** (`#a34e5c`).
 
 ---
 
-## 👩‍❤️‍👩 From Bestie to Bestie
+## 👩‍❤️‍👩 Long Distance Bestie to My Lady
 
-Every section and letter in this website is written directly from her closest best friend / soul sister:
-- Celebrating their sisterhood, unbreakable bond, and inside jokes.
-- Thanking My Lady for being an anchor, listener, cheerleader, and safe haven through thick and thin.
+Every section, letter, and card is dedicated to **My Lady** from her best friend:
+- **"No matter how much the distance between us, our bond will remain the same always."**
+- Celebrating their sisterhood, endless video calls, inside jokes, and unwavering loyalty.
 
 ---
 
 ## 📑 Multi-Page Structure
 
 1. **🏠 Home / Overview (`index.html`)**:
-   - Editorial Hero from her bestie, arched portrait frame with floating `✷` star.
+   - Editorial Hero dedicated to My Lady across the miles.
+   - Arched portrait frame with floating `✷` star.
    - Quick Portal Cards to each celebration room.
    - "Begin Celebration 🎂 ↗" button.
 
 2. **🎂 The Cake Ceremony (`cake.html`)**:
    - 3D interactive multi-tier cake with lit candles.
    - Blow out the candles with smoke animation.
-   - Slice the cake with knife animation to reveal *"Served with Love from Your Bestie ♡"*.
+   - Slice the cake with knife animation to reveal *"Served with Love across the miles to My Lady ♡"*.
    - Built-in music-box melody player for *"Happy Birthday My Lady"*.
 
-3. **👑 Why You're Unmatched (`reasons.html`)**:
-   - 6 editorial tribute cards honoring My Lady's grace, soul-sister bond, humor, secret-keeping, dreams, and golden heart.
+3. **👑 Why My Lady Is Unmatched (`reasons.html`)**:
+   - 6 editorial tribute cards honoring My Lady's grace, unbreakable long-distance bond, humor, secret-keeping, dreams, and golden heart.
 
 4. **📷 Our Moments & Memories (`gallery.html`)**:
    - Polaroid-style photo frames with washi-tape decorations.
    - **Upload Real Photos**: Instant image uploader that saves real pictures with My Lady into `localStorage` so they stay permanently saved across pages!
    - Lightbox dialog for full-size viewing.
 
-5. **💌 A Little Note (`letter.html`)**:
+5. **💌 A Little Note for My Lady (`letter.html`)**:
    - Dedicated editorial letter card matching the editorial magazine aesthetic.
-   - Heartfelt, emotional letter written directly by her best friend celebrating their bond.
+   - Heartfelt, emotional letter from her best friend highlighting that miles cannot touch their bond.
 
 6. **🎁 Bestie Surprise Box (`gifts.html`)**:
    - 3D styled gift box with dusty rose ribbons.
-   - Tap to unbox 4 exclusive Bestie VIP passes (Chai & Dessert Dates, 24/7 Midnight Venting Line, Shopping Spree Partner, and Birthday Wish).
+   - Tap to unbox 4 exclusive Bestie VIP passes (Reunion Chai & Dessert Date, 24/7 Long-Distance Hotline, Virtual Shopping Spree, and One Big Birthday Wish).
    - Grand celebration finale banner with celebratory confetti explosions.
 
 ---
